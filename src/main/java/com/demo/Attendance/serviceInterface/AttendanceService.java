@@ -1,0 +1,13 @@
+package com.demo.Attendance.serviceInterface;
+
+
+import com.demo.Attendance.dtoAttendance.AttendanceRequestDto;
+import com.demo.Attendance.dtoAttendance.AttendanceResponseDto;
+
+import java.util.List;
+
+public interface AttendanceService {
+
+    AttendanceResponseDto markAttendance(AttendanceRequestDto attendanceRequestDto);
+    List<AttendanceResponseDto> getAttendanceData ();
+}
