@@ -44,10 +44,10 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAdminById(id));
     }
 
-//    @GetMapping("/admins")
-//    public List<AdminResponseDto> getAllAdmins(){
-//        return adminService.getAllAdmins();
-//    }
+    @GetMapping("/admins")
+    public List<AdminResponseDto> getAllAdmins(){
+        return adminService.getAllAdmins();
+    }
 
 
 }
