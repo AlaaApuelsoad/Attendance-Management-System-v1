@@ -160,7 +160,7 @@ logging.level.org.springframework.security=DEBUG
 
 - **Database**: MySQL
 - **Database Schema**:
-![Database Schema](https://github.com/AlaaApuelsoad/Attendance_Management_System_V1/blob/main/Database%20Schema.png)
+![Database Schema](https://github.com/AlaaApuelsoad/Attendance-Management-System-v1/blob/main/sql_script/Database_Design.mwb)
 
 
 ## Validation and Error Handling
