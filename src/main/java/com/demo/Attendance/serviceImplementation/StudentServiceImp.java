@@ -2,7 +2,6 @@ package com.demo.Attendance.serviceImplementation;
 
 import com.demo.Attendance.dtoStudent.StudentRequestDto;
 import com.demo.Attendance.dtoStudent.StudentResponseDto;
-import com.demo.Attendance.dtoStudent.StudentUpdateRequestDto;
 import com.demo.Attendance.model.Student;
 import com.demo.Attendance.mapper.StudentMapper;
 import com.demo.Attendance.model.User;
@@ -39,24 +38,19 @@ public class StudentServiceImp implements StudentService {
     @Transactional
     public StudentResponseDto createStudent(StudentRequestDto studentRequestDto) {
 
-        //Unique checker for email and phoneNumber
         uniqueChecker.emailUniqueChecker(studentRequestDto.getEmail());
         uniqueChecker.phoneNumberUniqueChecker(studentRequestDto.getPhoneNumber());
 
-        //Set user for student
         User studentUser = studentUtil.setUserForStudent(studentRequestDto);
 
         Student student = StudentMapper.mapToStudent(studentRequestDto);
 
         student.setUser(studentUser);
 
-        //save student
         studentRepository.save(student);
 
-        // update student userName with adding studentId
         studentUtil.updateUserNameWithId(student.getId(),studentUser);
 
-        // save student user
         userRepository.save(studentUser);
 
         return StudentMapper.mapToStudentResponseDto(student);
@@ -64,16 +58,14 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     @Transactional
-    public StudentResponseDto updateStudent(long id, StudentUpdateRequestDto studentUpdateRequestDto) {
+    public StudentResponseDto updateStudent(long id, StudentRequestDto studentRequestDto) {
 
-        // Fetch instructor and throw if not found
         Student student = studentUtil.findStudentById(id);
 
-        uniqueChecker.emailUniqueChecker(studentUpdateRequestDto.getEmail());
-        uniqueChecker.phoneNumberUniqueChecker(studentUpdateRequestDto.getPhoneNumber());
+        uniqueChecker.emailUniqueChecker(studentRequestDto.getEmail());
+        uniqueChecker.phoneNumberUniqueChecker(studentRequestDto.getPhoneNumber());
 
-        // update email, phone number and password if provided
-        studentUtil.updateStudentDetails(student,studentUpdateRequestDto);
+        studentUtil.updateStudentDetails(student,studentRequestDto);
 
         studentRepository.save(student);
 

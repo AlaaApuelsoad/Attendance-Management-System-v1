@@ -1,9 +1,8 @@
 package com.demo.Attendance.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,31 +11,30 @@ import java.util.List;
 @Entity
 @Table(name = "student")
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-    @OneToOne(cascade = CascadeType.ALL)
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false ,name = "first_name")
+    @Column(nullable = false,length = 50)
     private String firstName;
 
 
-    @Column(nullable = false, name = "last_name")
+    @Column(nullable = false,length = 50)
     private String lastName;
 
-    @Column(unique = true,nullable = false, name = "email")
+    @Column(nullable = false,length = 100,unique = true)
     private String email;
 
-    @Column(unique = true,nullable = false, name = "phone")
+    @Column(nullable = false,length = 11,unique = true)
     private String phoneNumber;
-
 
     @ManyToMany(cascade = { CascadeType.ALL },fetch = FetchType.LAZY)
     @JoinTable(

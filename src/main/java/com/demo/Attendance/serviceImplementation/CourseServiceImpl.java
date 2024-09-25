@@ -2,7 +2,6 @@ package com.demo.Attendance.serviceImplementation;
 
 import com.demo.Attendance.dtoCourse.CourseRequestDto;
 import com.demo.Attendance.dtoCourse.CourseResponseDto;
-import com.demo.Attendance.dtoCourse.CourseUpdateRequestDto;
 import com.demo.Attendance.mapper.CourseMapper;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.repository.CourseRepository;
@@ -57,13 +56,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
-    public CourseResponseDto updateCourse(long id, CourseUpdateRequestDto courseUpdateRequestDto) {
+    public CourseResponseDto updateCourse(long id, CourseRequestDto courseRequestDto) {
 
         // Fetch course and throw if not found
         Course course = courseUtil.findCourseById(id);
 
         // update course details courseName , description
-        courseUtil.updateCourseDetails(course,courseUpdateRequestDto);
+        courseUtil.updateCourseDetails(course,courseRequestDto);
 
         courseRepository.save(course);
 

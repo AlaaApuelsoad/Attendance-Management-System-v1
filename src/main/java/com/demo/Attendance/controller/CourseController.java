@@ -2,11 +2,13 @@ package com.demo.Attendance.controller;
 
 import com.demo.Attendance.dtoCourse.CourseRequestDto;
 import com.demo.Attendance.dtoCourse.CourseResponseDto;
-import com.demo.Attendance.dtoCourse.CourseUpdateRequestDto;
 import com.demo.Attendance.serviceInterface.CourseService;
-import jakarta.validation.Valid;
+import com.demo.Attendance.serviceInterface.OnCreate;
+import com.demo.Attendance.serviceInterface.OnUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,29 +24,31 @@ public class CourseController {
     }
 
     @PostMapping("/courses")
-    public ResponseEntity<CourseResponseDto> createCourse(@Valid @RequestBody CourseRequestDto courseRequestDto){
-        return ResponseEntity.ok(courseService.createCourse(courseRequestDto));
+    public ResponseEntity<CourseResponseDto> createCourse
+            (@Validated(OnCreate.class) @RequestBody CourseRequestDto courseRequestDto){
+        return new ResponseEntity<>(courseService.createCourse(courseRequestDto),HttpStatus.CREATED);
     }
 
     @PatchMapping("/courses/{id}")
-    public ResponseEntity<CourseResponseDto> updateCourse(@PathVariable long id, @Valid @RequestBody CourseUpdateRequestDto courseUpdateRequestDto){
-        return ResponseEntity.ok(courseService.updateCourse(id,courseUpdateRequestDto));
+    public ResponseEntity<CourseResponseDto> updateCourse
+            (@PathVariable long id, @Validated(OnUpdate.class) @RequestBody CourseRequestDto courseRequestDto){
+        return new ResponseEntity<>(courseService.updateCourse(id,courseRequestDto),HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/courses/{id}")
     public ResponseEntity<String> deleteCourseById(@PathVariable long id){
         courseService.deleteCourseById(id);
-        return ResponseEntity.ok("Course with id- "+id+" Deleted successfully!");
+        return new ResponseEntity<>("Course with id- "+id+" Deleted successfully!",HttpStatus.OK);
     }
 
     @GetMapping("/courses/{id}")
     public ResponseEntity<CourseResponseDto> getCourseById(@PathVariable long id){
-        return ResponseEntity.ok(courseService.getCourseById(id));
+        return new ResponseEntity<>(courseService.getCourseById(id),HttpStatus.FOUND);
     }
 
     @GetMapping("/courses")
-    public List<CourseResponseDto> getAllCourses(){
-        return courseService.getAllCourses();
+    public ResponseEntity<List<CourseResponseDto>> getAllCourses(){
+        return new ResponseEntity<>(courseService.getAllCourses(),HttpStatus.OK);
     }
 
 }

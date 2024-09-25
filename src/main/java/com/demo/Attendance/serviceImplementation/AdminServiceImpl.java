@@ -2,7 +2,6 @@ package com.demo.Attendance.serviceImplementation;
 
 import com.demo.Attendance.dtoAdmin.AdminRequestDto;
 import com.demo.Attendance.dtoAdmin.AdminResponseDto;
-import com.demo.Attendance.dtoAdmin.AdminUpdateRequestDto;
 import com.demo.Attendance.mapper.AdminMapper;
 import com.demo.Attendance.model.Admin;
 import com.demo.Attendance.model.User;
@@ -47,34 +46,32 @@ public class AdminServiceImpl implements AdminService {
         User adminUser = adminUtil.setUserForAdmin(adminRequestDto);
 
         Admin admin = AdminMapper.mapToAdmin(adminRequestDto);
-
         admin.setUser(adminUser);
         adminRepository.save(admin);
         adminUtil.updateUserNameWithId(admin.getId(),adminUser);
 
         userRepository.save(adminUser);
-        //Handle if the admin saving request is failed not save the user
-//        if (admin.getId() > 0) {
-//            userRepository.save(adminUser);
-//        }
+
+        System.out.println(admin);
+
         return AdminMapper.mapToAdminResponseDto(admin);
     }
 
     @Override
     @Transactional
-    public AdminResponseDto updateAdmin(AdminUpdateRequestDto adminUpdateRequestDto, long id) {
+    public AdminResponseDto updateAdmin(AdminRequestDto adminRequestDto, long id) {
 
         // Fetch instructor and throw if not found
         Admin admin = adminUtil.findAdminById(id);
 
         //Unique checker for email and phoneNumber
-        uniqueChecker.emailUniqueChecker(adminUpdateRequestDto.getEmail());
-        uniqueChecker.phoneNumberUniqueChecker(adminUpdateRequestDto.getPhoneNumber());
+        uniqueChecker.emailUniqueChecker(adminRequestDto.getEmail());
+        uniqueChecker.phoneNumberUniqueChecker(adminRequestDto.getPhoneNumber());
 
         User adminUser = admin.getUser();
 
         // update admin details
-        adminUtil.updateAdminDetails(admin,adminUpdateRequestDto);
+        adminUtil.updateAdminDetails(admin,adminRequestDto);
 
         // update userName with id
         adminUtil.updateUserNameWithId(admin.getId(),adminUser);

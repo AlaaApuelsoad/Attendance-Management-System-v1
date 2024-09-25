@@ -1,6 +1,6 @@
 package com.demo.Attendance.util;
 
-import com.demo.Attendance.dtoCourse.CourseUpdateRequestDto;
+import com.demo.Attendance.dtoCourse.CourseRequestDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.repository.CourseRepository;
@@ -22,13 +22,13 @@ public class CourseUtil {
                 .orElseThrow(() -> new NotFoundException(ConstantMessages.courseNotFound+id+ConstantMessages.notFoundMessage));
     }
 
-    public void updateCourseDetails(Course course , CourseUpdateRequestDto courseUpdateRequestDto){
+    public void updateCourseDetails(Course course , CourseRequestDto courseRequestDto){
 
-        if (isValid(courseUpdateRequestDto.getCourseName())){
-            course.setCourseName(courseUpdateRequestDto.getCourseName());
+        if (isValid(courseRequestDto.getCourseName())){
+            course.setCourseName(courseRequestDto.getCourseName());
         }
-        if (isValid(courseUpdateRequestDto.getDescription())){
-            course.setDescription(courseUpdateRequestDto.getDescription());
+        if (isValid(courseRequestDto.getDescription())){
+            course.setDescription(courseRequestDto.getDescription());
         }
     }
 

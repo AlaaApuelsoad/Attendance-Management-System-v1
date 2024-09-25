@@ -60,18 +60,4 @@ public class ApplicationInitialize {
         }
     }
 
-//    @Override
-//    @Transactional
-//    public void onApplicationEvent(ContextRefreshedEvent event) {
-//
-//        // Initialize roles after the schema is created
-//        List<String> roleNames = Arrays.asList("admin","student","instructor");
-//        roleNames.forEach(roleName ->{
-//            if (roleRepository.findByRoleName(roleName) == null){
-//                Role role = new Role();
-//                role.setRoleName(roleName);
-//                roleRepository.save(role);
-//            }
-//        });
-//    }
 }

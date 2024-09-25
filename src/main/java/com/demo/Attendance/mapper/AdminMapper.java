@@ -12,7 +12,6 @@ public class AdminMapper {
     public static Admin mapToAdmin(AdminRequestDto adminRequestDto){
 
         Admin admin = new Admin();
-
         admin.setFirstName(adminRequestDto.getFirstName());
         admin.setLastName(adminRequestDto.getLastName());
         admin.setEmail(adminRequestDto.getEmail());

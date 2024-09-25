@@ -1,12 +1,12 @@
 package com.demo.Attendance.controller;
 
-import com.demo.Attendance.dtoAdmin.AdminRequestDto;
-import com.demo.Attendance.dtoAdmin.AdminResponseDto;
-import com.demo.Attendance.dtoAdmin.AdminUpdateRequestDto;
+import com.demo.Attendance.dtoAdmin.*;
 import com.demo.Attendance.serviceInterface.AdminService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.demo.Attendance.serviceInterface.OnCreate;
+import com.demo.Attendance.serviceInterface.OnUpdate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,39 +14,39 @@ import java.util.List;
 @RestController
 public class AdminController {
 
-    private AdminService adminService;
+    private final AdminService adminService;
 
-    @Autowired
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
     }
 
     @PostMapping("/admins")
-    public ResponseEntity<AdminResponseDto> createAdmin(@Valid @RequestBody AdminRequestDto adminRequestDto){
-        return ResponseEntity.ok(adminService.createAdmin(adminRequestDto));
+    public ResponseEntity<AdminResponseDto> createAdmin(@Validated(OnCreate.class) @RequestBody AdminRequestDto adminRequestDto){
+        System.out.println("in controller");
+        return new ResponseEntity<>(adminService.createAdmin(adminRequestDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/admins/{id}")
     public ResponseEntity<AdminResponseDto> updateAdmin(@PathVariable long id,
-                                                      @Valid @RequestBody AdminUpdateRequestDto adminUpdateRequestDto){
+                                                      @Validated(OnUpdate.class) @RequestBody AdminRequestDto adminRequestDto){
 
-        return ResponseEntity.ok(adminService.updateAdmin(adminUpdateRequestDto,id));
+        return new ResponseEntity<>(adminService.updateAdmin(adminRequestDto,id),HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/admins/{id}")
     public ResponseEntity<String> deleteAdminById(@PathVariable long id){
         adminService.deleteAdmin(id);
-        return ResponseEntity.ok("Admin with id- "+id+" Deleted successfully!");
+        return new ResponseEntity<>("Admin with id- "+id+" Deleted successfully!",HttpStatus.OK);
     }
 
     @GetMapping("/admins/{id}")
     public ResponseEntity<AdminResponseDto> getAdminById(@PathVariable long id){
-        return ResponseEntity.ok(adminService.getAdminById(id));
+        return new ResponseEntity<>(adminService.getAdminById(id),HttpStatus.FOUND);
     }
 
     @GetMapping("/admins")
-    public List<AdminResponseDto> getAllAdmins(){
-        return adminService.getAllAdmins();
+    public ResponseEntity<List<AdminResponseDto>> getAllAdmins(){
+        return new ResponseEntity<>(adminService.getAllAdmins(),HttpStatus.OK);
     }
 
 

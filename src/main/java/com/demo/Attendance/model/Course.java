@@ -2,10 +2,7 @@ package com.demo.Attendance.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "course")
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @ToString
 public class Course {
     @Id
@@ -22,11 +18,10 @@ public class Course {
     @Column(name = "id")
     private long id;
 
-    @NotNull(message = "CourseUtil name cannot be null")
-    @Column(nullable = false,name = "course_name")
+    @Column(nullable = false,length = 50)
     private String courseName;
 
-    @Column(nullable = false,name = "description")
+    @Column(nullable = false,length = 150)
     private String description;
 
     @ManyToMany(mappedBy = "courses",fetch = FetchType.LAZY)

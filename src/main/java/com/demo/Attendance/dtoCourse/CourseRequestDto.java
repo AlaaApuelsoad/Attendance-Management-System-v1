@@ -1,29 +1,23 @@
 package com.demo.Attendance.dtoCourse;
 
-import jakarta.validation.constraints.NotEmpty;
+import com.demo.Attendance.serviceInterface.OnCreate;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class CourseRequestDto {
 
-    @NotEmpty(message = "CourseUtil name cannot be null")
+    @NotBlank(message = "CourseUtil name cannot be null",groups = OnCreate.class)
     @Pattern(regexp = "^(?!\\s*$)[a-zA-Z\\s]+$", message = "course name must contain only letters")
     private String courseName;
 
-    @NotEmpty(message = "course description cannot be null")
+    @NotBlank(message = "course description cannot be null",groups = OnCreate.class)
     @Pattern(regexp = "^(?!\\s*$)[a-zA-Z\\s]+$", message = "description must contain only letters")
     private  String description;
 
-    public CourseRequestDto(String course, String sentence) {
-
-        this.courseName = course;
-        this.description = sentence;
-    }
 }

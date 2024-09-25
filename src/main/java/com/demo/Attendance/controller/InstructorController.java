@@ -2,10 +2,12 @@ package com.demo.Attendance.controller;
 
 import com.demo.Attendance.dtoInstructor.InstructorRequestDto;
 import com.demo.Attendance.dtoInstructor.InstructorResponseDto;
-import com.demo.Attendance.dtoInstructor.InstructorUpdateRequestDto;
 import com.demo.Attendance.serviceInterface.InstructorService;
-import jakarta.validation.Valid;
+import com.demo.Attendance.serviceInterface.OnCreate;
+import com.demo.Attendance.serviceInterface.OnUpdate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
 @RestController
 public class InstructorController {
 
-    private InstructorService instructorService;
+    private final InstructorService instructorService;
 
 
     public InstructorController(InstructorService instructorService) {
@@ -21,35 +23,36 @@ public class InstructorController {
     }
 
     @PostMapping("/instructors")
-    public ResponseEntity<InstructorResponseDto> createInstructor(@Valid @RequestBody InstructorRequestDto instructorRequestDto){
+    public ResponseEntity<InstructorResponseDto> createInstructor
+            (@Validated(OnCreate.class) @RequestBody InstructorRequestDto instructorRequestDto){
 
-        return ResponseEntity.ok(instructorService.createInstructor(instructorRequestDto));
+        return new ResponseEntity<>(instructorService.createInstructor(instructorRequestDto),HttpStatus.CREATED);
     }
 
     @PatchMapping("/instructors/{id}")
-    public ResponseEntity<InstructorResponseDto> updateInstructor(@PathVariable long id,
-                                                                @Valid @RequestBody InstructorUpdateRequestDto instructorUpdateRequestDto){
+    public ResponseEntity<InstructorResponseDto> updateInstructor
+            (@PathVariable long id, @Validated(OnUpdate.class) @RequestBody InstructorRequestDto instructorRequestDto){
 
-        return ResponseEntity.ok(instructorService.updateInstructor(id,instructorUpdateRequestDto));
+        return new ResponseEntity<>(instructorService.updateInstructor(id,instructorRequestDto),HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/instructors/{id}")
     public ResponseEntity<String> deleteInstructorById(@PathVariable long id){
 
         instructorService.deleteInstructor(id);
-        return ResponseEntity.ok("Instructor with id- "+id+" Deleted successfully!");
+        return new ResponseEntity<>("Instructor with id- "+id+" Deleted successfully!",HttpStatus.OK);
     }
 
     @GetMapping("/instructors/{id}")
     public ResponseEntity<InstructorResponseDto> getInstructorById(@PathVariable long id){
 
-        return ResponseEntity.ok(instructorService.getInstructorById(id));
+        return new ResponseEntity<>(instructorService.getInstructorById(id),HttpStatus.FOUND);
     }
 
     @GetMapping("/instructors")
-    public List<InstructorResponseDto> getAllInstructors(){
+    public ResponseEntity<List<InstructorResponseDto>> getAllInstructors(){
 
-        return instructorService.getAllInstructor();
+        return new ResponseEntity<>(instructorService.getAllInstructor(), HttpStatus.OK);
     }
 
 }

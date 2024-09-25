@@ -2,7 +2,6 @@ package com.demo.Attendance.serviceImplementation;
 
 import com.demo.Attendance.dtoInstructor.InstructorRequestDto;
 import com.demo.Attendance.dtoInstructor.InstructorResponseDto;
-import com.demo.Attendance.dtoInstructor.InstructorUpdateRequestDto;
 import com.demo.Attendance.mapper.InstructorMapper;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Instructor;
@@ -59,23 +58,23 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     @Transactional
-    public InstructorResponseDto updateInstructor(long id, InstructorUpdateRequestDto instructorUpdateRequestDto) {
+    public InstructorResponseDto updateInstructor(long id, InstructorRequestDto instructorRequestDto) {
 
         // Fetch instructor and throw if not found
         Instructor instructor = instructorUtil.findInstructorById(id);
 
         //Unique checker for email and phoneNumber
-        uniqueChecker.emailUniqueChecker(instructorUpdateRequestDto.getEmail());
-        uniqueChecker.phoneNumberUniqueChecker(instructorUpdateRequestDto.getPhoneNumber());
+        uniqueChecker.emailUniqueChecker(instructorRequestDto.getEmail());
+        uniqueChecker.phoneNumberUniqueChecker(instructorRequestDto.getPhoneNumber());
 
         // update courses for the instructor
-        List<Course> courses = instructorUtil.validateCourse(instructorUpdateRequestDto.getCoursesId());
+        List<Course> courses = instructorUtil.validateCourse(instructorRequestDto.getCoursesId());
 
         // update courses for the instructor
         instructorUtil.updateInstructorCourse(instructor, courses);
 
         // update email, phone number and password if provided
-        instructorUtil.updateInstructorDetails(instructor, instructorUpdateRequestDto);
+        instructorUtil.updateInstructorDetails(instructor, instructorRequestDto);
 
         // save the updated instructor
         instructorRepository.save(instructor);

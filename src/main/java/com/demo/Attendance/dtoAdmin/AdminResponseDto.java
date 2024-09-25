@@ -11,6 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class AdminResponseDto {
 
     private long id;

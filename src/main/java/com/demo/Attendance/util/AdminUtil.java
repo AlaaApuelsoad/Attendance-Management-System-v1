@@ -1,7 +1,6 @@
 package com.demo.Attendance.util;
 
 import com.demo.Attendance.dtoAdmin.AdminRequestDto;
-import com.demo.Attendance.dtoAdmin.AdminUpdateRequestDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
 import com.demo.Attendance.model.Admin;
 import com.demo.Attendance.model.Role;
@@ -27,8 +26,6 @@ public class AdminUtil {
     }
 
     public Admin findAdminById(long id){
-//        return adminRepository.findById(id)
-//                .orElseThrow(() -> new NotFoundException("admin with id - " + id + " not found"));
         return adminRepository.findById(id).orElseThrow(
                 ()-> new NotFoundException(ConstantMessages.adminNotFound +id+ConstantMessages.notFoundMessage)
         );
@@ -48,7 +45,7 @@ public class AdminUtil {
         return adminUser;
     }
 
-    public void updateAdminDetails(Admin admin,AdminUpdateRequestDto adminUpdateRequestDto){
+    public void updateAdminDetails(Admin admin, AdminRequestDto adminUpdateRequestDto){
 
         User adminUser = admin.getUser();
 

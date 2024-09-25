@@ -2,7 +2,6 @@ package com.demo.Attendance.serviceInterface;
 
 import com.demo.Attendance.dtoStudent.StudentRequestDto;
 import com.demo.Attendance.dtoStudent.StudentResponseDto;
-import com.demo.Attendance.dtoStudent.StudentUpdateRequestDto;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ public interface StudentService {
 
     StudentResponseDto createStudent(StudentRequestDto studentDto);
 
-    StudentResponseDto updateStudent(long id, StudentUpdateRequestDto updateRequestDto);
+    StudentResponseDto updateStudent(long id, StudentRequestDto studentRequestDto);
 
     void deleteStudentById(long id);
 

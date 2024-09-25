@@ -2,11 +2,12 @@ package com.demo.Attendance.controller;
 
 import com.demo.Attendance.dtoStudent.StudentRequestDto;
 import com.demo.Attendance.dtoStudent.StudentResponseDto;
-import com.demo.Attendance.dtoStudent.StudentUpdateRequestDto;
 import com.demo.Attendance.serviceInterface.StudentService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.demo.Attendance.serviceInterface.OnCreate;
+import com.demo.Attendance.serviceInterface.OnUpdate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,45 +16,62 @@ import java.util.List;
 @RestController
 public class StudentController {
 
-    private StudentService studentService;
-    @Autowired
+    private final StudentService studentService;
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
     @PostMapping("/students")
-    public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto studentRequestDto){
-        return ResponseEntity.ok(studentService.createStudent(studentRequestDto));
+    public ResponseEntity<StudentResponseDto> createStudent
+            (@Validated(OnCreate.class) @RequestBody StudentRequestDto studentRequestDto){
+        return new ResponseEntity<>(studentService.createStudent(studentRequestDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/students/{id}")
-    public ResponseEntity<StudentResponseDto> updateStudent(@PathVariable long id, @Valid @RequestBody StudentUpdateRequestDto studentUpdateRequestDto){
 
-        return ResponseEntity.ok(studentService.updateStudent(id,studentUpdateRequestDto));
+    @PatchMapping("/students/{id}")
+    public ResponseEntity<StudentResponseDto> updateStudent
+            (@PathVariable long id, @Validated(OnUpdate.class) @RequestBody StudentRequestDto studentRequestDto){
+
+        return new ResponseEntity<>(studentService.updateStudent(id,studentRequestDto),HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/students/{id}")
     public ResponseEntity<String> deleteStudentById(@PathVariable long id){
 
         studentService.deleteStudentById(id);
-        return ResponseEntity.ok("student with id- "+id+" Deleted successfully!");
+        return new ResponseEntity<>("student with id- "+id+" Deleted successfully!",HttpStatus.OK);
     }
 
     @GetMapping("/students/{id}")
     public ResponseEntity<StudentResponseDto> getStudentById(@PathVariable long id){
 
-        return ResponseEntity.ok(studentService.getStudentById(id));
+        return new ResponseEntity<>(studentService.getStudentById(id),HttpStatus.FOUND);
     }
 
     @GetMapping("/students")
-    public List<StudentResponseDto> getAllStudents(){
+    public ResponseEntity<List<StudentResponseDto>> getAllStudents(){
 
-        return studentService.getAllStudents();
+        return new ResponseEntity<>(studentService.getAllStudents(),HttpStatus.OK);
     }
 
 //    @GetMapping("/csrf-token")
 //    public CsrfToken getCsrfToken(HttpServletRequest request){
 //        return (CsrfToken) request.getAttribute("_csrf");
+//    }
+
+    //    @PostMapping("/students")
+//    public ResponseEntity<StudentResponseDto> createStudent
+//            (@Validated(OnCreate.class) @RequestBody StudentRequestDto studentRequestDto){
+//
+//        StudentResponseDto createdStudent = studentService.createStudent(studentRequestDto);
+//
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(createdStudent.getId())
+//                .toUri();
+//
+//        return ResponseEntity.created(location).body(createdStudent);
 //    }
 
 }

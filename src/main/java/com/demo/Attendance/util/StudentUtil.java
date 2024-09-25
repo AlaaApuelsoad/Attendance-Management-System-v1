@@ -1,7 +1,6 @@
 package com.demo.Attendance.util;
 
 import com.demo.Attendance.dtoStudent.StudentRequestDto;
-import com.demo.Attendance.dtoStudent.StudentUpdateRequestDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
 import com.demo.Attendance.model.*;
 import com.demo.Attendance.repository.RoleRepository;
@@ -9,8 +8,6 @@ import com.demo.Attendance.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class StudentUtil {
@@ -45,17 +42,36 @@ public class StudentUtil {
         return studentUser;
     }
 
-    public void updateStudentDetails(Student student, StudentUpdateRequestDto studentUpdateRequestDto) {
+    public void updateStudentDetails(Student student, StudentRequestDto studentRequestDto) {
 
-        if (isValid(studentUpdateRequestDto.getEmail())) {
-            student.setEmail(studentUpdateRequestDto.getEmail());
+        User studentUser = student.getUser();
+
+        if (isValid(studentRequestDto.getEmail())) {
+            student.setEmail(studentRequestDto.getEmail());
         }
-        if (isValid(studentUpdateRequestDto.getPhoneNumber())) {
-            student.setPhoneNumber(studentUpdateRequestDto.getPhoneNumber());
+        if (isValid(studentRequestDto.getPhoneNumber())) {
+            student.setPhoneNumber(studentRequestDto.getPhoneNumber());
         }
-        if (isValid(studentUpdateRequestDto.getPassword())) {
-            updateInstructorPassword(student, studentUpdateRequestDto.getPassword());
+        if (isValid(studentRequestDto.getPassword())) {
+            updateInstructorPassword(student, studentRequestDto.getPassword());
         }
+
+        String firstNameUpdate = studentRequestDto.getFirstName();
+        String lastNameUpdate = studentRequestDto.getLastName();
+
+        if (isValid(firstNameUpdate)) {
+            student.setFirstName(firstNameUpdate);
+        }
+        if (isValid(lastNameUpdate)) {
+            student.setLastName(lastNameUpdate);
+        }
+
+        // Update userName based on new or existing first, last names
+        String UserName = (firstNameUpdate != null ? firstNameUpdate : student.getFirstName())
+                + (lastNameUpdate != null ? lastNameUpdate : student.getLastName());
+
+        studentUser.setUserName(UserName.toLowerCase());
+
     }
 
     private boolean isValid(String value) {

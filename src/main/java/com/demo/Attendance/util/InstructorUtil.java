@@ -1,7 +1,6 @@
 package com.demo.Attendance.util;
 
 import com.demo.Attendance.dtoInstructor.InstructorRequestDto;
-import com.demo.Attendance.dtoInstructor.InstructorUpdateRequestDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Instructor;
@@ -68,17 +67,33 @@ public  class InstructorUtil {
         instructor.getCourses().addAll(courses);
     }
 
-    public void updateInstructorDetails(Instructor instructor , InstructorUpdateRequestDto instructorUpdateRequestDto){
+    public void updateInstructorDetails(Instructor instructor , InstructorRequestDto instructorRequestDto){
 
-        if (isValid(instructorUpdateRequestDto.getEmail())){
-            instructor.setEmail(instructorUpdateRequestDto.getEmail());
+        User instructorUser = instructor.getUser();
+        if (isValid(instructorRequestDto.getEmail())){
+            instructor.setEmail(instructorRequestDto.getEmail());
         }
-        if (isValid(instructorUpdateRequestDto.getPhoneNumber())){
-            instructor.setPhoneNumber(instructorUpdateRequestDto.getPhoneNumber());
+        if (isValid(instructorRequestDto.getPhoneNumber())){
+            instructor.setPhoneNumber(instructorRequestDto.getPhoneNumber());
         }
-        if (isValid(instructorUpdateRequestDto.getPassword())){
-            updateInstructorPassword(instructor,instructorUpdateRequestDto.getPassword());
+        if (isValid(instructorRequestDto.getPassword())){
+            updateInstructorPassword(instructor,instructorRequestDto.getPassword());
         }
+
+        String firstNameUpdate = instructorRequestDto.getFirstName();
+        String lastNameUpdate = instructorRequestDto.getLastName();
+
+        if (isValid(firstNameUpdate)){
+            instructor.setFirstName(firstNameUpdate);
+        }
+        if (isValid(lastNameUpdate)){
+            instructor.setLastName(lastNameUpdate);
+        }
+
+        String userName = (firstNameUpdate != null ? firstNameUpdate : instructor.getFirstName())
+                + (lastNameUpdate != null ? lastNameUpdate : instructor.getLastName());
+
+        instructorUser.setUserName(userName.toLowerCase());
     }
 
     private boolean isValid(String value){

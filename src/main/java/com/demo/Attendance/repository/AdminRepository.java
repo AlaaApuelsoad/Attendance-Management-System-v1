@@ -8,13 +8,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin,Long>,UniqueChecker {
 
-    //Check if email exists
     @Override
     boolean existsByEmail(String email);
 
-    //check if phoneNumber exists
     @Override
     boolean existsByPhoneNumber(String phoneNumber);
 
-    Admin findByPhoneNumber(String number);
 }

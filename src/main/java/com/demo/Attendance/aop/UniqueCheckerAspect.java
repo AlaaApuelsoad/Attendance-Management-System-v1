@@ -1,15 +1,11 @@
 package com.demo.Attendance.aop;
 
 import com.demo.Attendance.dtoAdmin.AdminRequestDto;
-import com.demo.Attendance.dtoAdmin.AdminUpdateRequestDto;
 import com.demo.Attendance.dtoInstructor.InstructorRequestDto;
-import com.demo.Attendance.dtoInstructor.InstructorUpdateRequestDto;
 import com.demo.Attendance.dtoStudent.StudentRequestDto;
-import com.demo.Attendance.dtoStudent.StudentUpdateRequestDto;
 import com.demo.Attendance.util.UniqueChecker;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -68,26 +64,26 @@ public class UniqueCheckerAspect {
 
         Object[] args = joinPoint.getArgs();
 
-        if (args.length > 0 && (args[0] instanceof AdminUpdateRequestDto ||
-                args[0] instanceof StudentUpdateRequestDto ||
-                args[0] instanceof InstructorUpdateRequestDto)) {
+        if (args.length > 0 && (args[0] instanceof AdminRequestDto ||
+                args[0] instanceof StudentRequestDto ||
+                args[0] instanceof InstructorRequestDto)) {
 
             Object dto = args[0];
 
-            if (dto instanceof InstructorUpdateRequestDto instructorUpdateRequestDto) {
+            if (dto instanceof InstructorRequestDto instructorRequestDto) {
                 System.out.println("Instructor DTO detected");
-                uniqueChecker.emailUniqueChecker(instructorUpdateRequestDto.getEmail());
-                uniqueChecker.phoneNumberUniqueChecker(instructorUpdateRequestDto.getPhoneNumber());
+                uniqueChecker.emailUniqueChecker(instructorRequestDto.getEmail());
+                uniqueChecker.phoneNumberUniqueChecker(instructorRequestDto.getPhoneNumber());
             }
-            if (dto instanceof StudentUpdateRequestDto studentUpdateRequestDto) {
+            if (dto instanceof StudentRequestDto studentRequestDto) {
                 System.out.println("Student DTO detected");
-                uniqueChecker.emailUniqueChecker(studentUpdateRequestDto.getEmail());
-                uniqueChecker.phoneNumberUniqueChecker(studentUpdateRequestDto.getPhoneNumber());
+                uniqueChecker.emailUniqueChecker(studentRequestDto.getEmail());
+                uniqueChecker.phoneNumberUniqueChecker(studentRequestDto.getPhoneNumber());
             }
-            if (dto instanceof AdminUpdateRequestDto adminUpdateRequestDto) {
+            if (dto instanceof AdminRequestDto adminRequestDto) {
                 System.out.println("Admin DTO detected");
-                uniqueChecker.emailUniqueChecker(adminUpdateRequestDto.getEmail());
-                uniqueChecker.phoneNumberUniqueChecker(adminUpdateRequestDto.getPhoneNumber());
+                uniqueChecker.emailUniqueChecker(adminRequestDto.getEmail());
+                uniqueChecker.phoneNumberUniqueChecker(adminRequestDto.getPhoneNumber());
             }
 
         }

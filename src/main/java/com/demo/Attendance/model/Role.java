@@ -1,22 +1,20 @@
 package com.demo.Attendance.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "role")
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class Role {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "role_name",nullable = false)
+    @Column(nullable = false,length = 50,unique = true)
     private String roleName;
 
 
