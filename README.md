@@ -187,7 +187,7 @@ Response Status: Each method is annotated with `@ResponseStatus` to set.
 
 - Declarative transaction management is implemented using Spring's `@Transactional` to ensure data integrity during critical operations.
 
-# Project Version 1 API Documentation
+# API Documentation Version 1
 
 You can access the API documentation for this project at the following URL:
 
