@@ -23,14 +23,16 @@ public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final AdminUtil adminUtil;
     private final UniqueChecker uniqueChecker;
+    private final AdminMapper adminMapper;
 
     @Autowired
     public AdminServiceImpl(AdminRepository adminRepository, UserRepository userRepository,
-                            AdminUtil adminUtil, UniqueChecker uniqueChecker) {
+                            AdminUtil adminUtil, UniqueChecker uniqueChecker, AdminMapper adminMapper) {
         this.adminRepository = adminRepository;
         this.userRepository = userRepository;
         this.adminUtil = adminUtil;
         this.uniqueChecker = uniqueChecker;
+        this.adminMapper = adminMapper;
     }
 
 
@@ -45,16 +47,16 @@ public class AdminServiceImpl implements AdminService {
         //Set user for admin
         User adminUser = adminUtil.setUserForAdmin(adminRequestDto);
 
-        Admin admin = AdminMapper.mapToAdmin(adminRequestDto);
+        Admin admin = adminMapper.mapToAdmin(adminRequestDto);
         admin.setUser(adminUser);
         adminRepository.save(admin);
-        adminUtil.updateUserNameWithId(admin.getId(),adminUser);
+        adminUtil.updateUserNameWithId(admin.getId(), adminUser);
 
         userRepository.save(adminUser);
 
         System.out.println(admin);
 
-        return AdminMapper.mapToAdminResponseDto(admin);
+        return adminMapper.mapToDto(admin);
     }
 
     @Override
@@ -71,16 +73,16 @@ public class AdminServiceImpl implements AdminService {
         User adminUser = admin.getUser();
 
         // update admin details
-        adminUtil.updateAdminDetails(admin,adminRequestDto);
+        adminUtil.updateAdminDetails(admin, adminRequestDto);
 
         // update userName with id
-        adminUtil.updateUserNameWithId(admin.getId(),adminUser);
+        adminUtil.updateUserNameWithId(admin.getId(), adminUser);
 
         admin.setUser(adminUser);
 
         adminRepository.save(admin);
 
-        return AdminMapper.mapToAdminResponseDto(admin);
+        return adminMapper.mapToDto(admin);
     }
 
     @Override
@@ -94,12 +96,12 @@ public class AdminServiceImpl implements AdminService {
     public AdminResponseDto getAdminById(long id) {
 
         Admin admin = adminUtil.findAdminById(id);
-        return AdminMapper.mapToAdminResponseDto(admin);
+        return adminMapper.mapToDto(admin);
     }
 
     @Override
     public List<AdminResponseDto> getAllAdmins() {
         List<Admin> admins = adminRepository.findAll();
-        return AdminMapper.mapToAdminResponseList(admins);
+        return adminMapper.mapToDtolist(admins);
     }
 }

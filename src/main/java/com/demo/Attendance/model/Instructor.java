@@ -1,8 +1,9 @@
 package com.demo.Attendance.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +11,17 @@ import java.util.List;
 @Entity
 @Table(name = "instructor")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Instructor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
+    @JsonManagedReference(value = "instructorUserReference")
     private User user;
 
     @Column(nullable = false,length = 50)
@@ -33,11 +36,12 @@ public class Instructor {
     @Column(nullable = false,length = 11,unique = true)
     private String phoneNumber;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "instructor_course",
             joinColumns = @JoinColumn(name = "instructor_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
+    @JsonIgnore
     private List<Course> courses = new ArrayList<>();
 
 }

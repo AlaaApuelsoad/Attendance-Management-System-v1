@@ -4,52 +4,46 @@ import com.demo.Attendance.dtoStudent.StudentRequestDto;
 import com.demo.Attendance.dtoStudent.StudentResponseDto;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Student;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Component
 public class StudentMapper {
 
+    ObjectMapper objectMapper= new ObjectMapper();
 
-    //Mapping StudentRequestDto to Student
-    public static Student mapToStudent(StudentRequestDto studentRequestDto){
+    public Student mapToStudent(StudentRequestDto studentRequestDto){
 
-        Student student = new Student();
-
-        student.setFirstName(studentRequestDto.getFirstName());
-        student.setLastName(studentRequestDto.getLastName());
-        student.setEmail(studentRequestDto.getEmail());
-        student.setPhoneNumber(studentRequestDto.getPhoneNumber());
-
-        return student;
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        return objectMapper.convertValue(studentRequestDto, Student.class);
     }
 
-    public static StudentResponseDto mapToStudentResponseDto(Student student){
+    public StudentResponseDto mapToDto(Student student){
 
-        StudentResponseDto studentResponseDto = new StudentResponseDto();
+        objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-        studentResponseDto.setId(student.getId());
-        studentResponseDto.setFirstName(student.getFirstName());
-        studentResponseDto.setLastName(student.getLastName());
-        studentResponseDto.setEmail(student.getEmail());
-        studentResponseDto.setPhoneNumber(student.getPhoneNumber());
-        studentResponseDto.setUserName(student.getUser().getUserName());
-
-        //Handle if list of course is empty
-        if (student.getCourses().isEmpty()){
-            studentResponseDto.setCoursesName(null);
-        }else {
+        StudentResponseDto studentResponseDto = objectMapper.convertValue(student, StudentResponseDto.class);
+        if (student.getUser() != null){
+            studentResponseDto.setUserName(student.getUser().getUserName());
+            studentResponseDto.setRoleName(student.getUser().getRole().getRoleName());
+        }
+        if (!student.getCourses().isEmpty()){
             studentResponseDto.setCoursesName(student.getCourses().stream().map(Course::getCourseName).toList());
         }
 
         return studentResponseDto;
     }
 
-    //Mapping List<Student> to List<StudentResponseDto>
-    public static List<StudentResponseDto> toStudentResponseDTOList(List<Student> students) {
+    public List<StudentResponseDto> mapToDtoList(List<Student> students) {
         return students.stream()
-                .map(StudentMapper::mapToStudentResponseDto)
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 

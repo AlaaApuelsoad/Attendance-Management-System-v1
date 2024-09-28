@@ -27,6 +27,8 @@ public class CourseMapper {
         courseResponseDto.setId(course.getId());
         courseResponseDto.setCourseName(course.getCourseName());
         courseResponseDto.setDescription(course.getDescription());
+        courseResponseDto.setInstructorName(course.getInstructors().stream().map(instructor ->
+                instructor.getUser().getUserName()).toList().toString());
 
         return courseResponseDto;
     }

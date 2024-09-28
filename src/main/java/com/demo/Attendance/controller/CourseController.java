@@ -38,7 +38,7 @@ public class CourseController {
     @DeleteMapping("/courses/{id}")
     public ResponseEntity<String> deleteCourseById(@PathVariable long id){
         courseService.deleteCourseById(id);
-        return new ResponseEntity<>("Course with id- "+id+" Deleted successfully!",HttpStatus.OK);
+        return new ResponseEntity<>("Course with id- "+id+" Deleted successfully!",HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/courses/{id}")
@@ -48,7 +48,7 @@ public class CourseController {
 
     @GetMapping("/courses")
     public ResponseEntity<List<CourseResponseDto>> getAllCourses(){
-        return new ResponseEntity<>(courseService.getAllCourses(),HttpStatus.OK);
+        return new ResponseEntity<>(courseService.getAllCourses(),HttpStatus.ACCEPTED);
     }
 
 }

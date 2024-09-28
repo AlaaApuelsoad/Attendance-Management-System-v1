@@ -12,7 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class StudentRequestDto {
 
     @NotBlank(message = "first name cannot be null",groups = OnCreate.class)

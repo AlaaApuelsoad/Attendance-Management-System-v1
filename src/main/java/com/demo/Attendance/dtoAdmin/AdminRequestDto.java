@@ -7,8 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @NoArgsConstructor
-@Data
-@ToString
+@Getter
+@Setter
 public class AdminRequestDto {
 
     @NotBlank(message = "first name cannot be null",groups = OnCreate.class)

@@ -40,7 +40,7 @@ public class InstructorController {
     public ResponseEntity<String> deleteInstructorById(@PathVariable long id){
 
         instructorService.deleteInstructor(id);
-        return new ResponseEntity<>("Instructor with id- "+id+" Deleted successfully!",HttpStatus.OK);
+        return new ResponseEntity<>("Instructor with id- "+id+" Deleted successfully!",HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/instructors/{id}")
@@ -52,7 +52,7 @@ public class InstructorController {
     @GetMapping("/instructors")
     public ResponseEntity<List<InstructorResponseDto>> getAllInstructors(){
 
-        return new ResponseEntity<>(instructorService.getAllInstructor(), HttpStatus.OK);
+        return new ResponseEntity<>(instructorService.getAllInstructor(), HttpStatus.ACCEPTED);
     }
 
 }

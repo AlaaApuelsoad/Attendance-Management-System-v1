@@ -1,16 +1,16 @@
 package com.demo.Attendance.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 @Entity
 @NoArgsConstructor
-@Data
-@Builder
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Setter
+@Getter
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +19,7 @@ public class Admin {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",nullable = false)
+    @JsonManagedReference(value = "adminUserReference")
     private User user;
 
     @Column(nullable = false,length = 50)

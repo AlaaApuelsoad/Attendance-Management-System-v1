@@ -36,17 +36,18 @@ public class AdminController {
     @DeleteMapping("/admins/{id}")
     public ResponseEntity<String> deleteAdminById(@PathVariable long id){
         adminService.deleteAdmin(id);
-        return new ResponseEntity<>("Admin with id- "+id+" Deleted successfully!",HttpStatus.OK);
+        return new ResponseEntity<>("Admin with id- "+id+" Deleted successfully!",HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/admins/{id}")
     public ResponseEntity<AdminResponseDto> getAdminById(@PathVariable long id){
+
         return new ResponseEntity<>(adminService.getAdminById(id),HttpStatus.FOUND);
     }
 
     @GetMapping("/admins")
     public ResponseEntity<List<AdminResponseDto>> getAllAdmins(){
-        return new ResponseEntity<>(adminService.getAllAdmins(),HttpStatus.OK);
+        return new ResponseEntity<>(adminService.getAllAdmins(),HttpStatus.ACCEPTED);
     }
 
 

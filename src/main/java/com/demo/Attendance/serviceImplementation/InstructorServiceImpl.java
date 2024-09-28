@@ -24,14 +24,16 @@ public class InstructorServiceImpl implements InstructorService {
     private final UserRepository userRepository;
     private final UniqueChecker uniqueChecker;
     private final InstructorUtil instructorUtil;
+    private final InstructorMapper instructorMapper;
 
     @Autowired
     public InstructorServiceImpl(InstructorRepository instructorRepository, UserRepository userRepository,
-                                 UniqueChecker uniqueChecker, InstructorUtil instructorUtil) {
+                                 UniqueChecker uniqueChecker, InstructorUtil instructorUtil, InstructorMapper instructorMapper) {
         this.instructorRepository = instructorRepository;
         this.userRepository = userRepository;
         this.uniqueChecker = uniqueChecker;
         this.instructorUtil = instructorUtil;
+        this.instructorMapper = instructorMapper;
     }
 
 
@@ -46,14 +48,14 @@ public class InstructorServiceImpl implements InstructorService {
         // set user for instructor
         User instructorUser = instructorUtil.setUserForInstructor(instructorRequestDto);
 
-        Instructor instructor = InstructorMapper.mapToInstructor(instructorRequestDto);
+        Instructor instructor = instructorMapper.mapToInstructor(instructorRequestDto);
         instructor.setUser(instructorUser);
 
         instructorRepository.save(instructor);
         instructorUtil.updateUserNameWithId(instructor.getId(),instructorUser);
         userRepository.save(instructorUser);
 
-        return InstructorMapper.mapToInstructorResponse(instructor);
+        return instructorMapper.mapToDto(instructor);
     }
 
     @Override
@@ -79,7 +81,7 @@ public class InstructorServiceImpl implements InstructorService {
         // save the updated instructor
         instructorRepository.save(instructor);
 
-        return InstructorMapper.mapToInstructorResponse(instructor);
+        return instructorMapper.mapToDto(instructor);
     }
 
     @Override
@@ -94,15 +96,14 @@ public class InstructorServiceImpl implements InstructorService {
     public InstructorResponseDto getInstructorById(long id) {
 
         Instructor instructor = instructorUtil.findInstructorById(id);
-
-        return InstructorMapper.mapToInstructorResponse(instructor);
+        return instructorMapper.mapToDto(instructor);
     }
 
     @Override
     public List<InstructorResponseDto> getAllInstructor() {
 
         List<Instructor> instructors = instructorRepository.findAll();
-        return InstructorMapper.toInstructorResponseDTOList(instructors);
+        return instructorMapper.mapToDtoList(instructors);
     }
 
 

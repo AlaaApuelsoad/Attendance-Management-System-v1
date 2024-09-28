@@ -1,13 +1,16 @@
 package com.demo.Attendance.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +23,21 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @OneToOne(mappedBy = "user")
+    @JsonBackReference(value = "adminUserReference")
+    private Admin admin;
+
+    @OneToOne(mappedBy = "user")
+    @JsonBackReference( value = "studentUserReference")
+    private Student student;
+
+    @OneToOne(mappedBy = "user")
+    @JsonBackReference(value = "instructorUserReference")
+    private Instructor instructor;
+
     @ManyToOne
     @JoinColumn(name = "role_id",nullable = false)
+    @JsonBackReference(value = "roleUserReference")
     private Role role ;
 
 }

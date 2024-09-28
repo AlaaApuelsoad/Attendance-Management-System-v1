@@ -4,70 +4,48 @@ import com.demo.Attendance.dtoInstructor.InstructorRequestDto;
 import com.demo.Attendance.dtoInstructor.InstructorResponseDto;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Instructor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class InstructorMapper {
 
-    //Mapping to Instructor
-    public static Instructor mapToInstructor(InstructorRequestDto instructorRequestDto){
 
-       Instructor instructor = new Instructor();
+    ObjectMapper objectMapper = new ObjectMapper();
 
-       instructor.setFirstName(instructorRequestDto.getFirstName());
-       instructor.setLastName(instructorRequestDto.getLastName());
-       instructor.setEmail(instructorRequestDto.getEmail());
-       instructor.setPhoneNumber(instructorRequestDto.getPhoneNumber());
+    public Instructor mapToInstructor(InstructorRequestDto instructorRequestDto) {
 
-       return instructor;
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        return objectMapper.convertValue(instructorRequestDto, Instructor.class);
     }
 
-    //Mapping to InstructorResponseDto for create
-    public static InstructorResponseDto mapToInstructorResponse(Instructor instructor){
+    public InstructorResponseDto mapToDto(Instructor instructor) {
 
-        InstructorResponseDto instructorResponseDto = new InstructorResponseDto();
+        objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-        instructorResponseDto.setId(instructor.getId());
-        instructorResponseDto.setFirstName(instructor.getFirstName());
-        instructorResponseDto.setLastName(instructor.getLastName());
-        instructorResponseDto.setEmail(instructor.getEmail());
-        instructorResponseDto.setPhoneNumber(instructor.getPhoneNumber());
-        instructorResponseDto.setUserName(instructor.getUser().getUserName());
+        InstructorResponseDto instructorResponseDto = objectMapper.convertValue(instructor, InstructorResponseDto.class);
 
-        if (instructor.getCourses() != null && !instructor.getCourses().isEmpty()) {
-            instructorResponseDto.setCoursesName(
-                    instructor.getCourses().stream().map(Course::getCourseName).toList()
-            );
-        } else {
-            instructorResponseDto.setCoursesName(Collections.emptyList()); // or null if you prefer
+        if (instructor.getUser() != null) {
+            instructorResponseDto.setUserName(instructor.getUser().getUserName());
+            instructorResponseDto.setRoleName(instructor.getUser().getRole().getRoleName());
         }
-
-
+        if (!instructor.getCourses().isEmpty()){
+            instructorResponseDto.setCoursesName(instructor.getCourses().stream().map(Course::getCourseName).toList());
+        }
         return instructorResponseDto;
-    }
-//    public static InstructorResponseDto mapToInstructorResponseUpdate(Instructor instructor){
-//
-//        InstructorResponseDto instructorResponseDto = new InstructorResponseDto();
-//
-//        instructorResponseDto.setId(instructor.getId());
-//        instructorResponseDto.setFirstName(instructor.getFirstName());
-//        instructorResponseDto.setLastName(instructor.getLastName());
-//        instructorResponseDto.setEmail(instructor.getEmail());
-//        instructorResponseDto.setPhoneNumber(instructor.getPhoneNumber());
-//        instructorResponseDto.setUserName(instructor.getUser().getUserName());
-//        if (!instructor.getCourses().isEmpty()){
-//            instructorResponseDto.setCoursesName(instructor.getCourses().stream().map(CourseUtil::getCourseName).toList());
-//        }
-//
-//        return instructorResponseDto;
-//    }
 
-    //Mapping List<Instructor> to List<InstructorResponseDto>
-    public static List<InstructorResponseDto> toInstructorResponseDTOList(List<Instructor> instructors) {
+    }
+
+    public List<InstructorResponseDto> mapToDtoList(List<Instructor> instructors) {
         return instructors.stream()
-                .map(InstructorMapper::mapToInstructorResponse)
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 

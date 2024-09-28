@@ -25,12 +25,15 @@ public class StudentServiceImp implements StudentService {
     private final UniqueChecker uniqueChecker;
     private final StudentUtil studentUtil;
 
+    private final StudentMapper studentMapper;
+
     @Autowired
-    public StudentServiceImp(StudentRepository studentRepository, UserRepository userRepository, UniqueChecker uniqueChecker, StudentUtil studentUtil) {
+    public StudentServiceImp(StudentRepository studentRepository, UserRepository userRepository, UniqueChecker uniqueChecker, StudentUtil studentUtil, StudentMapper studentMapper) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.uniqueChecker = uniqueChecker;
         this.studentUtil = studentUtil;
+        this.studentMapper = studentMapper;
     }
 
 
@@ -43,7 +46,7 @@ public class StudentServiceImp implements StudentService {
 
         User studentUser = studentUtil.setUserForStudent(studentRequestDto);
 
-        Student student = StudentMapper.mapToStudent(studentRequestDto);
+        Student student = studentMapper.mapToStudent(studentRequestDto);
 
         student.setUser(studentUser);
 
@@ -53,7 +56,7 @@ public class StudentServiceImp implements StudentService {
 
         userRepository.save(studentUser);
 
-        return StudentMapper.mapToStudentResponseDto(student);
+        return studentMapper.mapToDto(student);
     }
 
     @Override
@@ -69,7 +72,7 @@ public class StudentServiceImp implements StudentService {
 
         studentRepository.save(student);
 
-        return StudentMapper.mapToStudentResponseDto(student);
+        return studentMapper.mapToDto(student);
     }
 
     @Override
@@ -84,7 +87,7 @@ public class StudentServiceImp implements StudentService {
     public StudentResponseDto getStudentById(long id) {
 
         Student student = studentUtil.findStudentById(id);
-        return StudentMapper.mapToStudentResponseDto(student);
+        return studentMapper.mapToDto(student);
     }
 
 
@@ -92,7 +95,7 @@ public class StudentServiceImp implements StudentService {
     public List<StudentResponseDto> getAllStudents() {
 
         List<Student> studentList = studentRepository.findAll();
-        return StudentMapper.toStudentResponseDTOList(studentList);
+        return studentMapper.mapToDtoList(studentList);
     }
 
 }

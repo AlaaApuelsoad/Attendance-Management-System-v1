@@ -39,7 +39,7 @@ public class StudentController {
     public ResponseEntity<String> deleteStudentById(@PathVariable long id){
 
         studentService.deleteStudentById(id);
-        return new ResponseEntity<>("student with id- "+id+" Deleted successfully!",HttpStatus.OK);
+        return new ResponseEntity<>("student with id- "+id+" Deleted successfully!",HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/students/{id}")
@@ -51,7 +51,7 @@ public class StudentController {
     @GetMapping("/students")
     public ResponseEntity<List<StudentResponseDto>> getAllStudents(){
 
-        return new ResponseEntity<>(studentService.getAllStudents(),HttpStatus.OK);
+        return new ResponseEntity<>(studentService.getAllStudents(),HttpStatus.ACCEPTED);
     }
 
 //    @GetMapping("/csrf-token")

@@ -3,41 +3,53 @@ package com.demo.Attendance.mapper;
 import com.demo.Attendance.dtoAdmin.AdminRequestDto;
 import com.demo.Attendance.dtoAdmin.AdminResponseDto;
 import com.demo.Attendance.model.Admin;
+import com.fasterxml.jackson.databind.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@Component
 public class AdminMapper {
 
-    public static Admin mapToAdmin(AdminRequestDto adminRequestDto){
+    ObjectMapper objectMapper = new ObjectMapper();
 
-        Admin admin = new Admin();
-        admin.setFirstName(adminRequestDto.getFirstName());
-        admin.setLastName(adminRequestDto.getLastName());
-        admin.setEmail(adminRequestDto.getEmail());
-        admin.setPhoneNumber(adminRequestDto.getPhoneNumber());
+    public Admin mapToAdmin(AdminRequestDto adminRequestDto) {
 
-        return admin;
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        return objectMapper.convertValue(adminRequestDto, Admin.class);
     }
 
-    public static AdminResponseDto mapToAdminResponseDto(Admin admin){
+    public AdminResponseDto mapToDto(Admin admin) {
 
-        AdminResponseDto adminResponseDto = new AdminResponseDto();
+        objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-        adminResponseDto.setId(admin.getId());
-        adminResponseDto.setFirstName(admin.getFirstName());
-        adminResponseDto.setLastName(admin.getLastName());
-        adminResponseDto.setEmail(admin.getEmail());
-        adminResponseDto.setPhoneNumber(admin.getPhoneNumber());
-        adminResponseDto.setRole(admin.getUser().getRole().getRoleName());
-        adminResponseDto.setUserName(admin.getUser().getUserName());
+        AdminResponseDto adminResponseDto = objectMapper.convertValue(admin, AdminResponseDto.class);
 
+        if (admin.getUser() != null) {
+            adminResponseDto.setUserName(admin.getUser().getUserName());
+            adminResponseDto.setRoleName(admin.getUser().getRole().getRoleName());
+        }
         return adminResponseDto;
     }
 
-    public static List<AdminResponseDto> mapToAdminResponseList(List<Admin> admins){
+    public List<AdminResponseDto> mapToDtolist(List<Admin> admins) {
+
         return admins.stream()
-                .map(AdminMapper::mapToAdminResponseDto)
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
+
+
+//    public static AdminResponseDto mapToDto(Admin admin){
+//        objectMapper.registerModule(new SimpleModule().addDeserializer(AdminResponseDto.class, ));
+//        objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+//        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+//        return objectMapper.convertValue(admin,AdminResponseDto.class);
+//    }
+
 }
