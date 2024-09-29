@@ -10,10 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -27,7 +24,7 @@ import java.util.stream.Collectors;
  * This class handles various exceptions thrown by the application and returns
  * appropriate error responses to the client.
  */
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandling {
 
     /**
@@ -55,7 +52,7 @@ public class GlobalExceptionHandling {
      */
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ResponseBody
+//    @ResponseBody
     public ResponseEntity<ErrorResponse> handleStudentNotFoundException(NotFoundException exception) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
