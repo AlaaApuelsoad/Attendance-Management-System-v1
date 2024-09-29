@@ -160,7 +160,7 @@ logging.level.org.springframework.security=DEBUG
 
 - **Database**: MySQL
 - **Database Schema**:
-![Database Schema](https://github.com/AlaaApuelsoad/Attendance_Management_System_V1/blob/main/Database%20Schema.png)
+![Database Schema](https://github.com/AlaaApuelsoad/Attendance-Management-System-v1/blob/main/sql_script/Screenshot%20(22).png)
 
 
 ## Validation and Error Handling
@@ -187,7 +187,7 @@ Response Status: Each method is annotated with `@ResponseStatus` to set.
 
 - Declarative transaction management is implemented using Spring's `@Transactional` to ensure data integrity during critical operations.
 
-# Project Version 1 API Documentation
+# API Documentation Version 1
 
 You can access the API documentation for this project at the following URL:
 
