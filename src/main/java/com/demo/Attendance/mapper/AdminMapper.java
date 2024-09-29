@@ -20,15 +20,10 @@ public class AdminMapper {
     public Admin mapToAdmin(AdminRequestDto adminRequestDto) {
 
         System.out.println(objectMapper);
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         return objectMapper.convertValue(adminRequestDto, Admin.class);
     }
 
     public AdminResponseDto mapToDto(Admin admin) {
-
-        objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
         AdminResponseDto adminResponseDto = objectMapper.convertValue(admin, AdminResponseDto.class);
 
