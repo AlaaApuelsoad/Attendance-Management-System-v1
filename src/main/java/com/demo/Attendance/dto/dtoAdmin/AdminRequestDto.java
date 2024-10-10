@@ -1,18 +1,15 @@
-package com.demo.Attendance.dtoStudent;
+package com.demo.Attendance.dto.dtoAdmin;
 
 import com.demo.Attendance.serviceInterface.OnCreate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class StudentRequestDto {
+public class AdminRequestDto {
 
     @NotBlank(message = "first name cannot be null",groups = OnCreate.class)
     @Size(max = 50, message = "first name maximum char is 50 character")

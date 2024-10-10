@@ -1,44 +1,39 @@
 package com.demo.Attendance.mapper;
 
-import com.demo.Attendance.dtoCourse.CourseRequestDto;
-import com.demo.Attendance.dtoCourse.CourseResponseDto;
+import com.demo.Attendance.dto.dtoCourse.CourseRequestDto;
+import com.demo.Attendance.dto.dtoCourse.CourseResponseDto;
 import com.demo.Attendance.model.Course;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class CourseMapper {
 
-    public static Course mapToCourse(CourseRequestDto courseRequestDto){
 
-        Course course = new Course();
+    private final ObjectMapper objectMapper;
 
-        course.setCourseName(courseRequestDto.getCourseName());
-        course.setDescription(courseRequestDto.getDescription());
-
-        return course;
+    public CourseMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
-    //CourseUpdateResponse Dto
-    public static CourseResponseDto mapToCourseUpdateResponseDto(Course course){
+    public Course matToCourse(CourseRequestDto courseRequestDto) {
+        return objectMapper.convertValue(courseRequestDto, Course.class);
+    }
 
-        CourseResponseDto courseResponseDto = new CourseResponseDto();
+    public CourseResponseDto mapToDto(Course course) {
 
-        courseResponseDto.setId(course.getId());
-        courseResponseDto.setCourseName(course.getCourseName());
-        courseResponseDto.setDescription(course.getDescription());
-        courseResponseDto.setInstructorName(course.getInstructors().stream().map(instructor ->
-                instructor.getUser().getUserName()).toList().toString());
-
+        CourseResponseDto courseResponseDto = objectMapper.convertValue(course, CourseResponseDto.class);
+        courseResponseDto.setInstructorName(courseResponseDto.getInstructorName());
         return courseResponseDto;
     }
 
 
-    //Mapping List<CourseUtil> to List<CourseResponseDto>
-    public static List<CourseResponseDto> toCourseResponseDtoList(List<Course> courses) {
+    public List<CourseResponseDto> mapToDtoList(List<Course> courses) {
         return courses.stream()
-                .map(CourseMapper::mapToCourseUpdateResponseDto)
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
-
 }

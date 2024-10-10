@@ -1,7 +1,7 @@
 package com.demo.Attendance.controller;
 
-import com.demo.Attendance.dtoStudent.StudentRequestDto;
-import com.demo.Attendance.dtoStudent.StudentResponseDto;
+import com.demo.Attendance.dto.dtoStudent.StudentRequestDto;
+import com.demo.Attendance.dto.dtoStudent.StudentResponseDto;
 import com.demo.Attendance.serviceInterface.StudentService;
 import com.demo.Attendance.serviceInterface.OnCreate;
 import com.demo.Attendance.serviceInterface.OnUpdate;

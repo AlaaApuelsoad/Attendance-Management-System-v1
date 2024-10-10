@@ -1,6 +1,6 @@
 package com.demo.Attendance.mapper;
 
-import com.demo.Attendance.dtoEnrollment.EnrollmentResponseDto;
+import com.demo.Attendance.dto.dtoEnrollment.EnrollmentResponseDto;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Student;
 

@@ -1,5 +1,4 @@
-package com.demo.Attendance.dtoStudent;
-
+package com.demo.Attendance.dto.dtoInstructor;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class StudentResponseDto {
+public class InstructorResponseDto {
 
     private long id;
     private String firstName;
@@ -21,7 +20,7 @@ public class StudentResponseDto {
     private String email;
     private String phoneNumber;
     private String userName;
-    private String roleName;
+    private String RoleName;
     private List<String> coursesName = new ArrayList<>();
 
 

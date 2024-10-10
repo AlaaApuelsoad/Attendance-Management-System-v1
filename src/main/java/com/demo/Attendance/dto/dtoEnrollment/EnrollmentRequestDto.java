@@ -1,4 +1,4 @@
-package com.demo.Attendance.dtoEnrollment;
+package com.demo.Attendance.dto.dtoEnrollment;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

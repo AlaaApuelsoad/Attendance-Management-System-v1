@@ -1,19 +1,20 @@
 package com.demo.Attendance.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "course")
+@Table(name = "course",indexes = {
+        @Index(name = "courseName",columnList = "courseName")
+})
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +31,7 @@ public class Course {
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     private List<Student> student = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany(mappedBy = "courses",fetch = FetchType.LAZY)
     private List<Instructor> instructors = new ArrayList<>();
 
 }

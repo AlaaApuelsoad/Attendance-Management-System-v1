@@ -1,6 +1,6 @@
 package com.demo.Attendance.util;
 
-import com.demo.Attendance.dtoStudent.StudentRequestDto;
+import com.demo.Attendance.dto.dtoStudent.StudentRequestDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
 import com.demo.Attendance.model.*;
 import com.demo.Attendance.repository.RoleRepository;

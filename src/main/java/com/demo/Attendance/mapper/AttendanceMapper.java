@@ -1,9 +1,8 @@
 package com.demo.Attendance.mapper;
 
-import com.demo.Attendance.dtoAttendance.AttendanceResponseDto;
+import com.demo.Attendance.dto.dtoAttendance.AttendanceResponseDto;
 import com.demo.Attendance.model.Attendance;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,6 @@ public class AttendanceMapper {
         return attendanceResponseDto;
     }
 
-    //Mapping List<Attendance> to List<AttendanceResponseDto>
     public static List<AttendanceResponseDto> attendanceResponseDtoList(List<Attendance> attendances) {
         return attendances.stream()
                 .map(AttendanceMapper::mapToAttendanceResponseDto)

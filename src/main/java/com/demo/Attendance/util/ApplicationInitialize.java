@@ -2,6 +2,7 @@ package com.demo.Attendance.util;
 
 import com.demo.Attendance.model.Role;
 import com.demo.Attendance.model.User;
+import com.demo.Attendance.repository.AdminRepository;
 import com.demo.Attendance.repository.RoleRepository;
 import com.demo.Attendance.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -24,7 +25,8 @@ public class ApplicationInitialize {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ApplicationInitialize(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public ApplicationInitialize(UserRepository userRepository, RoleRepository roleRepository,
+                                 PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -56,8 +58,8 @@ public class ApplicationInitialize {
                 userRepository.save(mainUser);
                 logger.info("Main user 'admin' created.");
             }
-
         }
+
     }
 
 }

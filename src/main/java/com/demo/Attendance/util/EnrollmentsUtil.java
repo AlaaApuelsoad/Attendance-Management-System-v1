@@ -1,6 +1,6 @@
 package com.demo.Attendance.util;
 
-import com.demo.Attendance.dtoEnrollment.EnrollmentRequestDto;
+import com.demo.Attendance.dto.dtoEnrollment.EnrollmentRequestDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Student;

@@ -1,7 +1,7 @@
 package com.demo.Attendance.serviceImplementation;
 
-import com.demo.Attendance.dtoInstructor.InstructorRequestDto;
-import com.demo.Attendance.dtoInstructor.InstructorResponseDto;
+import com.demo.Attendance.dto.dtoInstructor.InstructorRequestDto;
+import com.demo.Attendance.dto.dtoInstructor.InstructorResponseDto;
 import com.demo.Attendance.mapper.InstructorMapper;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Instructor;

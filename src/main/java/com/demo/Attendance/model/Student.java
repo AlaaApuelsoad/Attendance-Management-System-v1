@@ -1,8 +1,6 @@
 package com.demo.Attendance.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Student {
 
     @Id
@@ -42,13 +41,14 @@ public class Student {
     private String phoneNumber;
 
 //    @JsonManagedReference(value = "studentCourseReference")
-    @ManyToMany(cascade = { CascadeType.ALL },fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "enrollment",
             joinColumns = { @JoinColumn(name = "student_id") },
             inverseJoinColumns = { @JoinColumn(name = "course_id") }
     )
-    @JsonIgnore
+//    @JsonIgnore
     List<Course> courses = new ArrayList<>();
+
 
 }

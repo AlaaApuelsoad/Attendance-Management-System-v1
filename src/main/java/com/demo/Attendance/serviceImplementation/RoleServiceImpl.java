@@ -1,7 +1,7 @@
 package com.demo.Attendance.serviceImplementation;
 
-import com.demo.Attendance.dtoRole.RoleRequestDto;
-import com.demo.Attendance.dtoRole.RoleResponseDto;
+import com.demo.Attendance.dto.dtoRole.RoleRequestDto;
+import com.demo.Attendance.dto.dtoRole.RoleResponseDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
 import com.demo.Attendance.mapper.RoleMapper;
 import com.demo.Attendance.model.Role;

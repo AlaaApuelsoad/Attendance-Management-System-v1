@@ -1,14 +1,12 @@
 package com.demo.Attendance.serviceImplementation;
 
-import com.demo.Attendance.dtoAttendance.AttendanceRequestDto;
-import com.demo.Attendance.dtoAttendance.AttendanceResponseDto;
+import com.demo.Attendance.dto.dtoAttendance.AttendanceRequestDto;
+import com.demo.Attendance.dto.dtoAttendance.AttendanceResponseDto;
 import com.demo.Attendance.mapper.AttendanceMapper;
 import com.demo.Attendance.model.Attendance;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Student;
 import com.demo.Attendance.repository.AttendanceRepository;
-import com.demo.Attendance.repository.CourseRepository;
-import com.demo.Attendance.repository.StudentRepository;
 import com.demo.Attendance.serviceInterface.AttendanceService;
 import com.demo.Attendance.util.AttendanceUtil;
 import com.demo.Attendance.util.CourseUtil;
@@ -41,14 +39,6 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     @Transactional
     public AttendanceResponseDto markAttendance(AttendanceRequestDto attendanceRequestDto) {
-
-//        Student student = studentRepository.findById(attendanceRequestDto.getStudentId()).orElseThrow(
-//                () -> new NotFoundException("student with id - "+attendanceRequestDto.getStudentId()+" Not Found")
-//        );
-
-//        Course course = courseRepository.findById(attendanceRequestDto.getCourseId()).orElseThrow(
-//                () -> new NotFoundException("course with id - "+attendanceRequestDto.getCourseId()+" Not Found")
-//        );
 
         Student student = studentUtil.findStudentById(attendanceRequestDto.getStudentId());
         Course course = courseUtil.findCourseById(attendanceRequestDto.getCourseId());

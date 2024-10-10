@@ -1,6 +1,6 @@
 package com.demo.Attendance.util;
 
-import com.demo.Attendance.dtoAdmin.AdminRequestDto;
+import com.demo.Attendance.dto.dtoAdmin.AdminRequestDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
 import com.demo.Attendance.model.Admin;
 import com.demo.Attendance.model.Role;

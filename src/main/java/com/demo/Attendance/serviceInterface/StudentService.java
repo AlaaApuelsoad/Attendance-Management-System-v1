@@ -1,7 +1,7 @@
 package com.demo.Attendance.serviceInterface;
 
-import com.demo.Attendance.dtoStudent.StudentRequestDto;
-import com.demo.Attendance.dtoStudent.StudentResponseDto;
+import com.demo.Attendance.dto.dtoStudent.StudentRequestDto;
+import com.demo.Attendance.dto.dtoStudent.StudentResponseDto;
 
 import java.util.List;
 

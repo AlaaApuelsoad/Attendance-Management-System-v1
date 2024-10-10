@@ -1,7 +1,7 @@
 package com.demo.Attendance.serviceInterface;
 
-import com.demo.Attendance.dtoRole.RoleRequestDto;
-import com.demo.Attendance.dtoRole.RoleResponseDto;
+import com.demo.Attendance.dto.dtoRole.RoleRequestDto;
+import com.demo.Attendance.dto.dtoRole.RoleResponseDto;
 
 import java.util.List;
 

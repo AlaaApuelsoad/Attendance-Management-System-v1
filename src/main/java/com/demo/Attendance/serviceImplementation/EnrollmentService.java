@@ -1,7 +1,7 @@
 package com.demo.Attendance.serviceImplementation;
 
-import com.demo.Attendance.dtoEnrollment.EnrollmentRequestDto;
-import com.demo.Attendance.dtoEnrollment.EnrollmentResponseDto;
+import com.demo.Attendance.dto.dtoEnrollment.EnrollmentRequestDto;
+import com.demo.Attendance.dto.dtoEnrollment.EnrollmentResponseDto;
 import com.demo.Attendance.mapper.EnrollmentMapper;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Student;

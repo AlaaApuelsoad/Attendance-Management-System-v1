@@ -1,7 +1,7 @@
 package com.demo.Attendance.controller;
 
-import com.demo.Attendance.dtoEnrollment.EnrollmentRequestDto;
-import com.demo.Attendance.dtoEnrollment.EnrollmentResponseDto;
+import com.demo.Attendance.dto.dtoEnrollment.EnrollmentRequestDto;
+import com.demo.Attendance.dto.dtoEnrollment.EnrollmentResponseDto;
 import com.demo.Attendance.serviceImplementation.EnrollmentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

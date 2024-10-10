@@ -1,13 +1,10 @@
 package com.demo.Attendance.mapper;
 
-import com.demo.Attendance.dtoStudent.StudentRequestDto;
-import com.demo.Attendance.dtoStudent.StudentResponseDto;
+import com.demo.Attendance.dto.dtoStudent.StudentRequestDto;
+import com.demo.Attendance.dto.dtoStudent.StudentResponseDto;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Student;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,8 +13,13 @@ import java.util.stream.Collectors;
 @Component
 public class StudentMapper {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+
+    private final ObjectMapper objectMapper;
+
+    public StudentMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     public Student mapToStudent(StudentRequestDto studentRequestDto){
         System.out.println(objectMapper);
         return objectMapper.convertValue(studentRequestDto, Student.class);

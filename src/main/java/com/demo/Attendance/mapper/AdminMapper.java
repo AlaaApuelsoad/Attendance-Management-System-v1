@@ -1,10 +1,9 @@
 package com.demo.Attendance.mapper;
 
-import com.demo.Attendance.dtoAdmin.AdminRequestDto;
-import com.demo.Attendance.dtoAdmin.AdminResponseDto;
+import com.demo.Attendance.dto.dtoAdmin.AdminRequestDto;
+import com.demo.Attendance.dto.dtoAdmin.AdminResponseDto;
 import com.demo.Attendance.model.Admin;
 import com.fasterxml.jackson.databind.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,8 +13,11 @@ import java.util.stream.Collectors;
 @Component
 public class AdminMapper {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
+
+    public AdminMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     public Admin mapToAdmin(AdminRequestDto adminRequestDto) {
 

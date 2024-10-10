@@ -11,7 +11,6 @@ public class ObjectMapperConfiguration {
 
     @Bean
     public ObjectMapper objectMapper(){
-        System.out.println("called");
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);

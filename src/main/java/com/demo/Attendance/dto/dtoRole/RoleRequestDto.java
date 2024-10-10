@@ -1,4 +1,4 @@
-package com.demo.Attendance.dtoRole;
+package com.demo.Attendance.dto.dtoRole;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

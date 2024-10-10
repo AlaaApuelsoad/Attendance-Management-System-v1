@@ -1,7 +1,7 @@
 package com.demo.Attendance.serviceImplementation;
 
-import com.demo.Attendance.dtoStudent.StudentRequestDto;
-import com.demo.Attendance.dtoStudent.StudentResponseDto;
+import com.demo.Attendance.dto.dtoStudent.StudentRequestDto;
+import com.demo.Attendance.dto.dtoStudent.StudentResponseDto;
 import com.demo.Attendance.model.Student;
 import com.demo.Attendance.mapper.StudentMapper;
 import com.demo.Attendance.model.User;

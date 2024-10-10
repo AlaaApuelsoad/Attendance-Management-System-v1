@@ -1,6 +1,5 @@
 package com.demo.Attendance.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,6 +10,9 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
+//@Table(indexes = {
+//        @Index(name = "email",columnList = "email",unique = true)
+//})
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

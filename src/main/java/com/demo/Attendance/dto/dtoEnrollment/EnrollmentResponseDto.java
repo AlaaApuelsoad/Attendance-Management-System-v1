@@ -1,4 +1,4 @@
-package com.demo.Attendance.dtoEnrollment;
+package com.demo.Attendance.dto.dtoEnrollment;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

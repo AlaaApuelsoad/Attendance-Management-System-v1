@@ -1,21 +1,22 @@
-package com.demo.Attendance.dtoAttendance;
+package com.demo.Attendance.dto.dtoCourse;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-public class AttendanceResponseDto {
+public class CourseResponseDto {
 
-    private long studentId;
-    private String StudentName;
+    private long id;
     private String courseName;
-    private String status;
+    private String description;
+    private List<String> instructorName;
+
 
 }

@@ -1,7 +1,9 @@
 package com.demo.Attendance.serviceInterface;
 
-import com.demo.Attendance.dtoCourse.CourseRequestDto;
-import com.demo.Attendance.dtoCourse.CourseResponseDto;
+import com.demo.Attendance.dto.dtoCourse.CourseRequestDto;
+import com.demo.Attendance.dto.dtoCourse.CourseResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,5 +18,7 @@ public interface CourseService {
     CourseResponseDto getCourseById(long id);
 
     List<CourseResponseDto> getAllCourses();
+
+    Page<CourseResponseDto> searchByCourseName(String courseName, Pageable pageable);
 
 }

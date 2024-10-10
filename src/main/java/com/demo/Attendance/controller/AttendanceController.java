@@ -1,7 +1,7 @@
 package com.demo.Attendance.controller;
 
-import com.demo.Attendance.dtoAttendance.AttendanceRequestDto;
-import com.demo.Attendance.dtoAttendance.AttendanceResponseDto;
+import com.demo.Attendance.dto.dtoAttendance.AttendanceRequestDto;
+import com.demo.Attendance.dto.dtoAttendance.AttendanceResponseDto;
 import com.demo.Attendance.serviceInterface.AttendanceService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

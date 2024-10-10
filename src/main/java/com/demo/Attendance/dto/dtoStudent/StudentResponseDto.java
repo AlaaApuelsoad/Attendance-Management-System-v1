@@ -1,15 +1,19 @@
-package com.demo.Attendance.dtoAdmin;
+package com.demo.Attendance.dto.dtoStudent;
+
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+import java.util.ArrayList;
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @NoArgsConstructor
 @Getter
 @Setter
-public class AdminResponseDto {
+public class StudentResponseDto {
 
     private long id;
     private String firstName;
@@ -18,5 +22,7 @@ public class AdminResponseDto {
     private String phoneNumber;
     private String userName;
     private String roleName;
+    private List<String> coursesName = new ArrayList<>();
+
 
 }

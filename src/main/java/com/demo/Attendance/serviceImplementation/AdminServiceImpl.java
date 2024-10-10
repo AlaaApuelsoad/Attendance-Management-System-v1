@@ -1,8 +1,9 @@
 package com.demo.Attendance.serviceImplementation;
 
-import com.demo.Attendance.dtoAdmin.AdminRequestDto;
-import com.demo.Attendance.dtoAdmin.AdminResponseDto;
+import com.demo.Attendance.dto.dtoAdmin.AdminRequestDto;
+import com.demo.Attendance.dto.dtoAdmin.AdminResponseDto;
 import com.demo.Attendance.mapper.AdminMapper;
+import com.demo.Attendance.mapper.AdminMapping;
 import com.demo.Attendance.model.Admin;
 import com.demo.Attendance.model.User;
 import com.demo.Attendance.repository.AdminRepository;
@@ -24,15 +25,18 @@ public class AdminServiceImpl implements AdminService {
     private final AdminUtil adminUtil;
     private final UniqueChecker uniqueChecker;
     private final AdminMapper adminMapper;
+    private final AdminMapping adminMapping;
+
 
     @Autowired
     public AdminServiceImpl(AdminRepository adminRepository, UserRepository userRepository,
-                            AdminUtil adminUtil, UniqueChecker uniqueChecker, AdminMapper adminMapper) {
+                            AdminUtil adminUtil, UniqueChecker uniqueChecker, AdminMapper adminMapper, AdminMapping adminMapping) {
         this.adminRepository = adminRepository;
         this.userRepository = userRepository;
         this.adminUtil = adminUtil;
         this.uniqueChecker = uniqueChecker;
         this.adminMapper = adminMapper;
+        this.adminMapping = adminMapping;
     }
 
 
@@ -47,7 +51,7 @@ public class AdminServiceImpl implements AdminService {
         //Set user for admin
         User adminUser = adminUtil.setUserForAdmin(adminRequestDto);
 
-        Admin admin = adminMapper.mapToAdmin(adminRequestDto);
+        Admin admin = adminMapping.mapToAdmin(adminRequestDto);
         admin.setUser(adminUser);
         adminRepository.save(admin);
         adminUtil.updateUserNameWithId(admin.getId(), adminUser);
@@ -103,5 +107,11 @@ public class AdminServiceImpl implements AdminService {
     public List<AdminResponseDto> getAllAdmins() {
         List<Admin> admins = adminRepository.findAll();
         return adminMapper.mapToDtolist(admins);
+    }
+
+    @Override
+    public AdminResponseDto getAdminByEmail(String email) {
+        Admin admin = adminRepository.findAdminByEmail(email);
+        return adminMapper.mapToDto(admin);
     }
 }

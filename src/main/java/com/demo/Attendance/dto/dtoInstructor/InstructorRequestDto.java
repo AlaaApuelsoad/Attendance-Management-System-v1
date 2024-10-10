@@ -1,4 +1,4 @@
-package com.demo.Attendance.dtoInstructor;
+package com.demo.Attendance.dto.dtoInstructor;
 
 import com.demo.Attendance.serviceInterface.OnCreate;
 import jakarta.validation.constraints.NotBlank;

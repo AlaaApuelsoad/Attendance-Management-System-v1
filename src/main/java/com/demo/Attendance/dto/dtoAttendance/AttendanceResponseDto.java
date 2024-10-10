@@ -1,4 +1,4 @@
-package com.demo.Attendance.dtoRole;
+package com.demo.Attendance.dto.dtoAttendance;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -11,9 +11,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RoleResponseDto {
+public class AttendanceResponseDto {
 
-    private long id;
-    private String roleName;
+    private long studentId;
+    private String StudentName;
+    private String courseName;
+    private String status;
 
 }

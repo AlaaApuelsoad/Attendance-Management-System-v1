@@ -1,10 +1,9 @@
 package com.demo.Attendance.controller;
 
-import com.demo.Attendance.dtoRole.RoleRequestDto;
-import com.demo.Attendance.dtoRole.RoleResponseDto;
+import com.demo.Attendance.dto.dtoRole.RoleRequestDto;
+import com.demo.Attendance.dto.dtoRole.RoleResponseDto;
 import com.demo.Attendance.serviceInterface.RoleService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

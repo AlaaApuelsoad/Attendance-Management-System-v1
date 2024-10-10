@@ -1,9 +1,7 @@
 package com.demo.Attendance.mapper;
 
-import com.demo.Attendance.dtoRole.RoleResponseDto;
-import com.demo.Attendance.dtoStudent.StudentResponseDto;
+import com.demo.Attendance.dto.dtoRole.RoleResponseDto;
 import com.demo.Attendance.model.Role;
-import com.demo.Attendance.model.Student;
 
 import java.util.List;
 import java.util.stream.Collectors;

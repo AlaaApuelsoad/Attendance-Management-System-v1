@@ -1,6 +1,5 @@
 package com.demo.Attendance.repository;
 
-import com.demo.Attendance.dtoInstructor.InstructorResponseDto;
 import com.demo.Attendance.model.Instructor;
 import com.demo.Attendance.serviceInterface.UniqueChecker;
 import org.springframework.data.jpa.repository.JpaRepository;

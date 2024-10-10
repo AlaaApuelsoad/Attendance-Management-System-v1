@@ -1,6 +1,6 @@
 package com.demo.Attendance.util;
 
-import com.demo.Attendance.dtoCourse.CourseRequestDto;
+import com.demo.Attendance.dto.dtoCourse.CourseRequestDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.repository.CourseRepository;

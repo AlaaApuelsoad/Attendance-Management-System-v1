@@ -1,6 +1,7 @@
 package com.demo.Attendance.controller;
 
-import com.demo.Attendance.dtoAdmin.*;
+import com.demo.Attendance.dto.dtoAdmin.AdminRequestDto;
+import com.demo.Attendance.dto.dtoAdmin.AdminResponseDto;
 import com.demo.Attendance.serviceInterface.AdminService;
 import com.demo.Attendance.serviceInterface.OnCreate;
 import com.demo.Attendance.serviceInterface.OnUpdate;
@@ -48,6 +49,11 @@ public class AdminController {
     @GetMapping("/admins")
     public ResponseEntity<List<AdminResponseDto>> getAllAdmins(){
         return new ResponseEntity<>(adminService.getAllAdmins(),HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/admins/{email}")
+    public ResponseEntity<AdminResponseDto> getAdminByEmail(@PathVariable String email){
+        return new ResponseEntity<>(adminService.getAdminByEmail(email),HttpStatus.FOUND);
     }
 
 

@@ -36,7 +36,7 @@ public class Instructor {
     @Column(nullable = false,length = 11,unique = true)
     private String phoneNumber;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "instructor_course",
             joinColumns = @JoinColumn(name = "instructor_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
