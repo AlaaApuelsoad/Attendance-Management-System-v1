@@ -1,5 +1,6 @@
 package com.demo.Attendance.serviceImplementation;
 
+import com.demo.Attendance.dto.dtoInstructor.InstructorRequestDto;
 import com.demo.Attendance.dto.dtoStudent.StudentRequestDto;
 import com.demo.Attendance.dto.dtoStudent.StudentResponseDto;
 import com.demo.Attendance.model.Student;
@@ -10,11 +11,16 @@ import com.demo.Attendance.repository.UserRepository;
 import com.demo.Attendance.serviceInterface.StudentService;
 import com.demo.Attendance.util.StudentUtil;
 import com.demo.Attendance.util.UniqueChecker;
+import com.github.javafaker.Faker;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 
 @Service
@@ -34,6 +40,24 @@ public class StudentServiceImp implements StudentService {
         this.uniqueChecker = uniqueChecker;
         this.studentUtil = studentUtil;
         this.studentMapper = studentMapper;
+    }
+
+    @Transactional
+    @PostConstruct
+    public void init() {
+        Faker faker = new Faker();
+
+        List<StudentRequestDto> studentRequestDtoList = IntStream.range(0, 0)
+                .mapToObj(i -> new StudentRequestDto(
+                        faker.name().firstName(),
+                        faker.name().lastName(),
+                        faker.internet().emailAddress(),
+                        faker.phoneNumber().subscriberNumber(11),
+                        faker.internet().password(6, 20)
+                ))
+                .toList();
+
+        studentRequestDtoList.forEach(this::createStudent);
     }
 
 
@@ -92,10 +116,10 @@ public class StudentServiceImp implements StudentService {
 
 
     @Override
-    public List<StudentResponseDto> getAllStudents() {
+    public Page<StudentResponseDto> getAllStudents(Pageable pageable) {
 
-        List<Student> studentList = studentRepository.findAll();
-        return studentMapper.mapToDtoList(studentList);
+        Page<Student> studentPage = studentRepository.findAll(pageable);
+        return studentPage.map(studentMapper::mapToDto);
     }
 
 }

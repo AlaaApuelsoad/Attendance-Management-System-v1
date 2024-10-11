@@ -17,7 +17,7 @@ public interface CourseService {
 
     CourseResponseDto getCourseById(long id);
 
-    List<CourseResponseDto> getAllCourses();
+    Page<CourseResponseDto> getAllCourses(Pageable pageable);
 
     Page<CourseResponseDto> searchByCourseName(String courseName, Pageable pageable);
 

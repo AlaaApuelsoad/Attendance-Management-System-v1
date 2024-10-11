@@ -5,7 +5,6 @@ import com.demo.Attendance.dto.dtoCourse.CourseResponseDto;
 import com.demo.Attendance.serviceInterface.CourseService;
 import com.demo.Attendance.serviceInterface.OnCreate;
 import com.demo.Attendance.serviceInterface.OnUpdate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +19,8 @@ import java.util.List;
 @RestController
 public class CourseController {
 
-    private CourseService courseService;
+    private final CourseService courseService;
 
-    @Autowired
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
@@ -51,17 +49,21 @@ public class CourseController {
     }
 
     @GetMapping("/courses")
-    public ResponseEntity<List<CourseResponseDto>> getAllCourses(){
-        return new ResponseEntity<>(courseService.getAllCourses(),HttpStatus.ACCEPTED);
+    public ResponseEntity<Page<CourseResponseDto>> getAllCourses(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "100") int size){
+
+        Pageable pageable = PageRequest.of(page,size);
+        return new ResponseEntity<>(courseService.getAllCourses(pageable),HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/courses/search")
     public ResponseEntity<Page<CourseResponseDto>> getCourseByName(
             @RequestParam String name,
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "100") int size){
 
-        Pageable pageable = PageRequest.of(page,size,Sort.by("courseName").ascending());
+        Pageable pageable = PageRequest.of(page,size,Sort.by(Sort.Order.asc("courseName")));
 
         return new ResponseEntity<>(courseService.searchByCourseName(name,pageable),HttpStatus.ACCEPTED);
     }

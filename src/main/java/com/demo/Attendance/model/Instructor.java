@@ -19,7 +19,7 @@ public class Instructor {
     @Column(name = "id")
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",nullable = false)
     @JsonManagedReference(value = "instructorUserReference")
     private User user;

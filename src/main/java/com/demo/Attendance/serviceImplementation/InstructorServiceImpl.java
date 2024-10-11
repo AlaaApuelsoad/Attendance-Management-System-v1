@@ -11,11 +11,16 @@ import com.demo.Attendance.repository.UserRepository;
 import com.demo.Attendance.serviceInterface.InstructorService;
 import com.demo.Attendance.util.InstructorUtil;
 import com.demo.Attendance.util.UniqueChecker;
+import com.github.javafaker.Faker;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 public class InstructorServiceImpl implements InstructorService {
@@ -37,22 +42,39 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
 
+    @Transactional
+    @PostConstruct
+    public void init() {
+        Faker faker = new Faker();
+
+        List<InstructorRequestDto> instructorRequestDtoList = IntStream.range(0, 0)
+                .mapToObj(i -> new InstructorRequestDto(
+                        faker.name().firstName(),
+                        faker.name().lastName(),
+                        faker.internet().emailAddress(),
+                        faker.phoneNumber().subscriberNumber(11),
+                        faker.internet().password(6, 20)
+                ))
+                .toList();
+
+        instructorRequestDtoList.forEach(this::createInstructor);
+    }
+
+
     @Override
     @Transactional
-    public InstructorResponseDto createInstructor(InstructorRequestDto instructorRequestDto){
+    public InstructorResponseDto createInstructor(InstructorRequestDto instructorRequestDto) {
 
-        //Unique checker for email and phoneNumber
         uniqueChecker.emailUniqueChecker(instructorRequestDto.getEmail());
         uniqueChecker.phoneNumberUniqueChecker(instructorRequestDto.getPhoneNumber());
 
-        // set user for instructor
         User instructorUser = instructorUtil.setUserForInstructor(instructorRequestDto);
 
         Instructor instructor = instructorMapper.mapToInstructor(instructorRequestDto);
         instructor.setUser(instructorUser);
 
         instructorRepository.save(instructor);
-        instructorUtil.updateUserNameWithId(instructor.getId(),instructorUser);
+        instructorUtil.updateUserNameWithId(instructor.getId(), instructorUser);
         userRepository.save(instructorUser);
 
         return instructorMapper.mapToDto(instructor);
@@ -100,10 +122,10 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public List<InstructorResponseDto> getAllInstructor() {
+    public Page<InstructorResponseDto> getAllInstructor(Pageable pageable) {
 
-        List<Instructor> instructors = instructorRepository.findAll();
-        return instructorMapper.mapToDtoList(instructors);
+        Page<Instructor> instructorPage = instructorRepository.findAll(pageable);
+        return instructorPage.map(instructorMapper::mapToDto);
     }
 
 

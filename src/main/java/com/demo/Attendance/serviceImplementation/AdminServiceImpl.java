@@ -11,11 +11,16 @@ import com.demo.Attendance.repository.UserRepository;
 import com.demo.Attendance.serviceInterface.AdminService;
 import com.demo.Attendance.util.AdminUtil;
 import com.demo.Attendance.util.UniqueChecker;
+import com.github.javafaker.Faker;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -39,6 +44,23 @@ public class AdminServiceImpl implements AdminService {
         this.adminMapping = adminMapping;
     }
 
+    @PostConstruct
+    @Transactional
+    public void init() {
+
+        Faker faker = new Faker();
+
+        List<AdminRequestDto> adminRequestDtoList = IntStream.range(0, 0)
+                .mapToObj(i -> new AdminRequestDto(
+                        faker.name().firstName(),
+                        faker.name().lastName(),
+                        faker.internet().emailAddress(),
+                        faker.phoneNumber().subscriberNumber(11),
+                        faker.internet().password(6, 20)
+                ))
+                .toList();
+        adminRequestDtoList.forEach(this::createAdmin);
+    }
 
     @Override
     @Transactional
@@ -57,8 +79,6 @@ public class AdminServiceImpl implements AdminService {
         adminUtil.updateUserNameWithId(admin.getId(), adminUser);
 
         userRepository.save(adminUser);
-
-        System.out.println(admin);
 
         return adminMapper.mapToDto(admin);
     }
@@ -92,7 +112,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public void deleteAdmin(long id) {
-        Admin admin = adminUtil.findAdminById(id);
         adminRepository.deleteById(id);
     }
 
@@ -104,9 +123,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<AdminResponseDto> getAllAdmins() {
-        List<Admin> admins = adminRepository.findAll();
-        return adminMapper.mapToDtolist(admins);
+    public Page<AdminResponseDto> getAllAdmins(Pageable pageable) {
+        Page<Admin> adminPage = adminRepository.findAll(pageable);
+        return adminPage.map(adminMapper::mapToDto);
     }
 
     @Override
@@ -114,4 +133,12 @@ public class AdminServiceImpl implements AdminService {
         Admin admin = adminRepository.findAdminByEmail(email);
         return adminMapper.mapToDto(admin);
     }
+
+    @Override
+    public Page<AdminResponseDto> getAllAdminsPageable(String firstName, Pageable pageable) {
+
+        Page<Admin> adminPage = adminRepository.searchAdminByFirstNameAndLastName(firstName, pageable);
+        return adminPage.map(adminMapper::mapToDto);
+    }
+
 }

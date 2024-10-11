@@ -11,7 +11,6 @@ import com.github.javafaker.Faker;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,7 @@ public class CourseServiceImpl implements CourseService {
 
         Faker faker = new Faker();
 
-        List<CourseRequestDto> courseRequestDtoList = IntStream.range(0, 1) // generate 10 books
+        List<CourseRequestDto> courseRequestDtoList = IntStream.range(0, 0)
                 .mapToObj(i -> new CourseRequestDto(
                         faker.educator().course(),
                         faker.lorem().sentence()
@@ -91,10 +90,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseResponseDto> getAllCourses() {
+    public Page<CourseResponseDto> getAllCourses(Pageable pageable) {
 
-        List<Course> courseList = courseRepository.findAll();
-        return courseMapper.mapToDtoList(courseList);
+        Page<Course> coursePage = courseRepository.findAll(pageable);
+
+        return coursePage.map(courseMapper::mapToDto);
     }
 
     @Override
@@ -104,17 +104,5 @@ public class CourseServiceImpl implements CourseService {
 
         return coursePage.map(courseMapper::mapToDto);
     }
-
-
-
-//    // Paginate courses with filtering by course name
-//    public Page<CourseResponseDto> getCoursesByName(String name, int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<Course> coursePage = courseRepository.findByCourseNameContaining(name, pageable);
-//
-//        Page<CourseResponseDto> dtoPage = coursePage.map(courseMapper::mapToDto);
-//        return dtoPage;
-//    }
-
 
 }

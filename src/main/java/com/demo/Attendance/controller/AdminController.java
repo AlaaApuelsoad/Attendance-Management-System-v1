@@ -5,12 +5,15 @@ import com.demo.Attendance.dto.dtoAdmin.AdminResponseDto;
 import com.demo.Attendance.serviceInterface.AdminService;
 import com.demo.Attendance.serviceInterface.OnCreate;
 import com.demo.Attendance.serviceInterface.OnUpdate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 public class AdminController {
@@ -47,8 +50,12 @@ public class AdminController {
     }
 
     @GetMapping("/admins")
-    public ResponseEntity<List<AdminResponseDto>> getAllAdmins(){
-        return new ResponseEntity<>(adminService.getAllAdmins(),HttpStatus.ACCEPTED);
+    public ResponseEntity<Page<AdminResponseDto>> getAllAdmins(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "100") int size){
+
+        Pageable pageable = PageRequest.of(page,size);
+        return new ResponseEntity<>(adminService.getAllAdmins(pageable),HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/admins/{email}")
@@ -56,5 +63,15 @@ public class AdminController {
         return new ResponseEntity<>(adminService.getAdminByEmail(email),HttpStatus.FOUND);
     }
 
+    @GetMapping("/admins/search")
+    public ResponseEntity<Page<AdminResponseDto>> getAllAdminsBySearch(
+            @RequestParam String firstName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size){
 
+        Pageable pageable = PageRequest.of(page, size,
+                Sort.by(Sort.Order.asc("firstName")));
+
+        return new ResponseEntity<>(adminService.getAllAdminsPageable(firstName,pageable),HttpStatus.ACCEPTED);
+    }
 }

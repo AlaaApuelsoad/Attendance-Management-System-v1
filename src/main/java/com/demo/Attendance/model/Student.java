@@ -23,7 +23,7 @@ public class Student {
     @Column(name = "id")
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonManagedReference(value = "studentUserReference")
     private User user;

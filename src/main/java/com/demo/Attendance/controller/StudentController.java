@@ -5,12 +5,14 @@ import com.demo.Attendance.dto.dtoStudent.StudentResponseDto;
 import com.demo.Attendance.serviceInterface.StudentService;
 import com.demo.Attendance.serviceInterface.OnCreate;
 import com.demo.Attendance.serviceInterface.OnUpdate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @RestController
@@ -49,10 +51,16 @@ public class StudentController {
     }
 
     @GetMapping("/students")
-    public ResponseEntity<List<StudentResponseDto>> getAllStudents(){
+    public ResponseEntity<Page<StudentResponseDto>> getAllStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "100") int size){
 
-        return new ResponseEntity<>(studentService.getAllStudents(),HttpStatus.ACCEPTED);
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(studentService.getAllStudents(pageable),HttpStatus.ACCEPTED);
     }
+
+
+
 
 //    @GetMapping("/csrf-token")
 //    public CsrfToken getCsrfToken(HttpServletRequest request){

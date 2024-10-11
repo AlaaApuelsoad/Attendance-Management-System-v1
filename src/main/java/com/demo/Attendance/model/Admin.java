@@ -10,9 +10,10 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-//@Table(indexes = {
-//        @Index(name = "email",columnList = "email",unique = true)
-//})
+@Table(indexes = {
+        @Index(name = "firstName",columnList = "firstName"),
+        @Index(name = "lastName",columnList = "lastName")
+})
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
