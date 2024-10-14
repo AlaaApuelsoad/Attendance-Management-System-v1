@@ -19,4 +19,6 @@ public interface StudentService {
 
     Page<StudentResponseDto> getAllStudents(Pageable pageable);
 
+    Page<StudentResponseDto> searchStudentByName(String name,Pageable pageable);
+
 }

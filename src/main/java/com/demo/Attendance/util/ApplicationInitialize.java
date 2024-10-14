@@ -2,7 +2,6 @@ package com.demo.Attendance.util;
 
 import com.demo.Attendance.model.Role;
 import com.demo.Attendance.model.User;
-import com.demo.Attendance.repository.AdminRepository;
 import com.demo.Attendance.repository.RoleRepository;
 import com.demo.Attendance.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -61,5 +60,4 @@ public class ApplicationInitialize {
         }
 
     }
-
 }

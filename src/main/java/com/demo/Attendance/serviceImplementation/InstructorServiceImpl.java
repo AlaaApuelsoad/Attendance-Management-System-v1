@@ -3,7 +3,6 @@ package com.demo.Attendance.serviceImplementation;
 import com.demo.Attendance.dto.dtoInstructor.InstructorRequestDto;
 import com.demo.Attendance.dto.dtoInstructor.InstructorResponseDto;
 import com.demo.Attendance.mapper.InstructorMapper;
-import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Instructor;
 import com.demo.Attendance.model.User;
 import com.demo.Attendance.repository.InstructorRepository;
@@ -43,11 +42,11 @@ public class InstructorServiceImpl implements InstructorService {
 
 
     @Transactional
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         Faker faker = new Faker();
 
-        List<InstructorRequestDto> instructorRequestDtoList = IntStream.range(0, 0)
+        List<InstructorRequestDto> instructorRequestDtoList = IntStream.range(0, 1000)
                 .mapToObj(i -> new InstructorRequestDto(
                         faker.name().firstName(),
                         faker.name().lastName(),
@@ -59,7 +58,6 @@ public class InstructorServiceImpl implements InstructorService {
 
         instructorRequestDtoList.forEach(this::createInstructor);
     }
-
 
     @Override
     @Transactional
@@ -84,23 +82,13 @@ public class InstructorServiceImpl implements InstructorService {
     @Transactional
     public InstructorResponseDto updateInstructor(long id, InstructorRequestDto instructorRequestDto) {
 
-        // Fetch instructor and throw if not found
         Instructor instructor = instructorUtil.findInstructorById(id);
 
-        //Unique checker for email and phoneNumber
         uniqueChecker.emailUniqueChecker(instructorRequestDto.getEmail());
         uniqueChecker.phoneNumberUniqueChecker(instructorRequestDto.getPhoneNumber());
 
-        // update courses for the instructor
-        List<Course> courses = instructorUtil.validateCourse(instructorRequestDto.getCoursesId());
-
-        // update courses for the instructor
-        instructorUtil.updateInstructorCourse(instructor, courses);
-
-        // update email, phone number and password if provided
         instructorUtil.updateInstructorDetails(instructor, instructorRequestDto);
 
-        // save the updated instructor
         instructorRepository.save(instructor);
 
         return instructorMapper.mapToDto(instructor);
@@ -128,48 +116,11 @@ public class InstructorServiceImpl implements InstructorService {
         return instructorPage.map(instructorMapper::mapToDto);
     }
 
+    @Override
+    public Page<InstructorResponseDto> searchByInstructorName(String name, Pageable pageable) {
 
-//    @Override
-//    @Transactional
-//    public InstructorResponseDto updateInstructor2(long id, InstructorUpdateRequestDto instructorUpdateRequestDto) {
-//
-//        Instructor instructor = instructorRepository.findById(id).orElseThrow(
-//                () -> new NotFoundException("instructor with id - " + id + " not found")
-//        );
-//
-//        List<CourseUtil> courses = courseRepository.findAllById(instructorUpdateRequestDto.getCoursesId());
-//        if (courses.size() != instructorUpdateRequestDto.getCoursesId().size()) {
-//
-//            // Find which IDs are not found
-//            List<Long> courseFoundIds = courses.stream().map(CourseUtil::getId).toList();
-//            List<Long> courseNotFoundIDs = instructorUpdateRequestDto.getCoursesId().stream()
-//                    .filter(courseId -> !courseFoundIds.contains(id)).toList();
-//
-//            System.out.println(courseNotFoundIDs);
-//            throw new NotFoundException("CourseUtil not found with IDs: " + courseNotFoundIDs);
-//        }
-//
-//        for (CourseUtil course : courses) {
-//            instructor.getCourses().add(course);
-//        }
-//        //Unique checker
-////        uniqueChecker.emailUniqueChecker(instructorUpdateRequestDto.getEmail());
-////        uniqueChecker.phoneNumberUniqueChecker(instructorUpdateRequestDto.getPhoneNumber());
-//
-//        if (instructorUpdateRequestDto.getEmail() != null && !instructorUpdateRequestDto.getEmail().trim().isEmpty()) {
-//            instructor.setEmail(instructorUpdateRequestDto.getEmail());
-//        }
-//        if (instructorUpdateRequestDto.getPhoneNumber() != null && !instructorUpdateRequestDto.getPhoneNumber().trim().isEmpty()) {
-//            instructor.setPhoneNumber(instructorUpdateRequestDto.getPhoneNumber());
-//        }
-//        if (instructorUpdateRequestDto.getPassword() != null && !instructorUpdateRequestDto.getPassword().trim().isEmpty()) {
-//            User instructorUser = instructor.getUser();
-//            instructorUser.setPassword(passwordEncoder.encode(instructorUpdateRequestDto.getPassword()));
-//            instructor.setUser(instructorUser);
-//        }
-//
-//        instructorRepository.save(instructor);
-//        return InstructorMapper.mapToInstructorResponse(instructor);
-//    }
+        Page<Instructor> instructorPage = instructorRepository.searchByInstructorName(name, pageable);
+        return instructorPage.map(instructorMapper::mapToDto);
+    }
 
 }

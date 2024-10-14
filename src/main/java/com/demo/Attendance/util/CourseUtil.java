@@ -19,7 +19,7 @@ public class CourseUtil {
 
     public Course findCourseById(long id){
         return courseRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ConstantMessages.courseNotFound+id+ConstantMessages.notFoundMessage));
+                .orElseThrow(() -> new NotFoundException(ConstantMessages.COURSE_WITH_ID +id+ConstantMessages.NOT_FOUND));
     }
 
     public void updateCourseDetails(Course course , CourseRequestDto courseRequestDto){
@@ -35,4 +35,5 @@ public class CourseUtil {
     private boolean isValid(String value){
         return value !=null && !value.trim().isEmpty();
     }
+
 }

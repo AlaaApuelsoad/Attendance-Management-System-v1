@@ -59,6 +59,16 @@ public class StudentController {
         return new ResponseEntity<>(studentService.getAllStudents(pageable),HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/students/search")
+    public ResponseEntity<Page<StudentResponseDto>> searchStudents(
+            @RequestParam() String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "100") int size){
+
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(studentService.searchStudentByName(name,pageable),HttpStatus.ACCEPTED);
+    }
+
 
 
 

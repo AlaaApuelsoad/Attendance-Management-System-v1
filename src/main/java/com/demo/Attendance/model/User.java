@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
@@ -23,15 +24,15 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user")
     @JsonBackReference(value = "adminUserReference")
     private Admin admin;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user")
     @JsonBackReference( value = "studentUserReference")
     private Student student;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user")
     @JsonBackReference(value = "instructorUserReference")
     private Instructor instructor;
 

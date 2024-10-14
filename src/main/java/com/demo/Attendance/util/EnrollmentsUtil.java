@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class EnrollmentsUtil {
@@ -29,14 +30,13 @@ public class EnrollmentsUtil {
         return studentRepository.findAllById(studentsIDs);
     }
 
-    public void filterStudentIDs(List<Student> students,EnrollmentRequestDto enrollmentRequestDto){
+    public void filterStudentIDs(Set<Student> students, EnrollmentRequestDto enrollmentRequestDto){
 
-        // Find which IDs are not found
         List<Long> studentFoundIDs = students.stream().map(Student::getId).toList();
         List<Long> studentNotFoundIDs = enrollmentRequestDto.getStudentId().stream()
                 .filter(id -> !studentFoundIDs.contains(id)).toList();
 
-        throw new NotFoundException(ConstantMessages.studentNotFound+studentNotFoundIDs+ConstantMessages.notFoundMessage);
+        throw new NotFoundException(ConstantMessages.STUDENT_WITH_ID +studentNotFoundIDs+ConstantMessages.NOT_FOUND);
     }
 
     public List<Course> findAllCoursesById(List<Long> coursesIDs){
@@ -44,13 +44,12 @@ public class EnrollmentsUtil {
         return courseRepository.findAllById(coursesIDs);
     }
 
-    public void filterCourseIDs(List<Course> courses , EnrollmentRequestDto enrollmentRequestDto){
+    public void filterCourseIDs(Set<Course> courses , EnrollmentRequestDto enrollmentRequestDto){
 
-        //Find which IDs are not found
         List<Long> courseFoundIDs = courses.stream().map(Course::getId).toList();
         List<Long> courseNotFoundIDs = enrollmentRequestDto.getCourseId().stream()
                 .filter(id -> !courseFoundIDs.contains(id)).toList();
 
-        throw new NotFoundException(ConstantMessages.courseNotFound+courseNotFoundIDs+ConstantMessages.notFoundMessage);
+        throw new NotFoundException(ConstantMessages.COURSE_WITH_ID +courseNotFoundIDs+ConstantMessages.NOT_FOUND);
     }
 }

@@ -8,12 +8,12 @@ import com.demo.Attendance.serviceInterface.OnUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 public class InstructorController {
@@ -59,6 +59,17 @@ public class InstructorController {
 
         Pageable pageable = PageRequest.of(page, size);
         return new ResponseEntity<>(instructorService.getAllInstructor(pageable), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/instructors/search")
+    public ResponseEntity<Page<InstructorResponseDto>> searchInstructorByName(
+            @RequestParam String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "100") int size){
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return new ResponseEntity<>(instructorService.searchByInstructorName(name,pageable),HttpStatus.ACCEPTED);
     }
 
 }

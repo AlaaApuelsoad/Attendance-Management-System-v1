@@ -18,21 +18,19 @@ public  class InstructorUtil {
 
     private final InstructorRepository instructorRepository;
     private final RoleRepository roleRepository;
-    private final CourseRepository courseRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public InstructorUtil(InstructorRepository instructorRepository, RoleRepository roleRepository,
-                          CourseRepository courseRepository, PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder) {
         this.instructorRepository = instructorRepository;
         this.roleRepository = roleRepository;
-        this.courseRepository = courseRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public Instructor findInstructorById(long id){
         return instructorRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ConstantMessages.instructorNotFound +" "+ id+" "+ ConstantMessages.notFoundMessage));
+                .orElseThrow(() -> new NotFoundException(ConstantMessages.INSTRUCTOR_WITH_ID +" "+ id+" "+ ConstantMessages.NOT_FOUND));
     }
 
     public User setUserForInstructor(InstructorRequestDto instructorRequestDto){
@@ -46,21 +44,6 @@ public  class InstructorUtil {
         instructorUser.setPassword(passwordEncoder.encode(instructorRequestDto.getPassword()));
 
         return instructorUser;
-    }
-
-    public List<Course> validateCourse(List<Long> courseIds){
-
-        List<Course> courses = courseRepository.findAllById(courseIds);
-
-        if (courses.size() !=courseIds.size()){
-
-            List<Long> foundCourseIds = courses.stream().map(Course::getId).toList();
-            List<Long> notFoundCourseIds = courseIds.stream().
-                    filter(courseId -> !foundCourseIds.contains(courseId)).toList();
-            throw new NotFoundException(ConstantMessages.courseNotFound+notFoundCourseIds+ConstantMessages.notFoundMessage);
-        }
-
-        return courses;
     }
 
     public void updateInstructorCourse(Instructor instructor,List<Course> courses){
@@ -107,13 +90,9 @@ public  class InstructorUtil {
         instructor.setUser(instructorUser);
     }
 
-
-
     public void updateUserNameWithId(long id ,User user){
         String newUserName = user.getUserName()+id;
         user.setUserName(newUserName);
 
     }
-
-
 }

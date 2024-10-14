@@ -3,13 +3,16 @@ package com.demo.Attendance.mapper;
 import com.demo.Attendance.dto.dtoEnrollment.EnrollmentResponseDto;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Student;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+@Component
 public class EnrollmentMapper {
 
-    public static EnrollmentResponseDto mapToEnrollResponseDto(List<Student> students) {
+    public EnrollmentResponseDto mapToDto(Set<Student> students) {
 
         EnrollmentResponseDto enrollmentResponseDto = new EnrollmentResponseDto();
 
@@ -32,11 +35,10 @@ public class EnrollmentMapper {
 
     }
 
-    public static EnrollmentResponseDto mapToEnrollmentStudentInCourse(Course course) {
+    public EnrollmentResponseDto mapToDto(Course course) {
 
         EnrollmentResponseDto enrollmentResponseDto = new EnrollmentResponseDto();
 
-        enrollmentResponseDto.setCourseName(course.getCourseName());
         enrollmentResponseDto.setStudentNameList(course.getStudent().stream()
                 .map(student -> student.getFirstName() + " " + student.getLastName()).toList());
 

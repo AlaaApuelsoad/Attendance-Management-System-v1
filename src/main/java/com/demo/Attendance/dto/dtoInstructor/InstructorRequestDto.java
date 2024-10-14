@@ -6,9 +6,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -39,14 +36,4 @@ public class InstructorRequestDto {
     @Size(min = 6,max = 20,message = "password minimum length is 6 and maximum length is 20")
     private String password;
 
-    private List<Long> coursesId = new ArrayList<>();
-
-
-    public InstructorRequestDto(String firstName, String lastName, String email, String phoneNumber, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-    }
 }

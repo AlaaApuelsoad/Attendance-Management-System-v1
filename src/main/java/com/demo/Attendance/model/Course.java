@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "course",indexes = {
@@ -27,11 +29,10 @@ public class Course {
     @Column(nullable = false, length = 150)
     private String description;
 
-//    @JsonBackReference(value = "studentCourseReference")
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
-    private List<Student> student = new ArrayList<>();
+    private Set<Student> student = new HashSet<>();
 
     @ManyToMany(mappedBy = "courses",fetch = FetchType.LAZY)
-    private List<Instructor> instructors = new ArrayList<>();
+    private Set<Instructor> instructors = new HashSet<>();
 
 }

@@ -1,6 +1,5 @@
 package com.demo.Attendance.serviceImplementation;
 
-import com.demo.Attendance.dto.dtoInstructor.InstructorRequestDto;
 import com.demo.Attendance.dto.dtoStudent.StudentRequestDto;
 import com.demo.Attendance.dto.dtoStudent.StudentResponseDto;
 import com.demo.Attendance.model.Student;
@@ -43,11 +42,11 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Transactional
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         Faker faker = new Faker();
 
-        List<StudentRequestDto> studentRequestDtoList = IntStream.range(0, 0)
+        List<StudentRequestDto> studentRequestDtoList = IntStream.range(0, 1000)
                 .mapToObj(i -> new StudentRequestDto(
                         faker.name().firstName(),
                         faker.name().lastName(),
@@ -119,6 +118,13 @@ public class StudentServiceImp implements StudentService {
     public Page<StudentResponseDto> getAllStudents(Pageable pageable) {
 
         Page<Student> studentPage = studentRepository.findAll(pageable);
+        return studentPage.map(studentMapper::mapToDto);
+    }
+
+    @Override
+    public Page<StudentResponseDto> searchStudentByName(String name, Pageable pageable) {
+
+        Page<Student> studentPage = studentRepository.searchStudentByName(name,pageable);
         return studentPage.map(studentMapper::mapToDto);
     }
 

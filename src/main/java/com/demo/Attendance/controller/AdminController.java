@@ -8,7 +8,6 @@ import com.demo.Attendance.serviceInterface.OnUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,53 +24,48 @@ public class AdminController {
     }
 
     @PostMapping("/admins")
-    public ResponseEntity<AdminResponseDto> createAdmin(@Validated(OnCreate.class) @RequestBody AdminRequestDto adminRequestDto){
+    public ResponseEntity<AdminResponseDto> createAdmin(@Validated(OnCreate.class) @RequestBody AdminRequestDto adminRequestDto) {
         System.out.println("in controller");
         return new ResponseEntity<>(adminService.createAdmin(adminRequestDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/admins/{id}")
     public ResponseEntity<AdminResponseDto> updateAdmin(@PathVariable long id,
-                                                      @Validated(OnUpdate.class) @RequestBody AdminRequestDto adminRequestDto){
+                                                        @Validated(OnUpdate.class) @RequestBody AdminRequestDto adminRequestDto) {
 
-        return new ResponseEntity<>(adminService.updateAdmin(adminRequestDto,id),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(adminService.updateAdmin(adminRequestDto, id), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/admins/{id}")
-    public ResponseEntity<String> deleteAdminById(@PathVariable long id){
+    public ResponseEntity<String> deleteAdminById(@PathVariable long id) {
         adminService.deleteAdmin(id);
-        return new ResponseEntity<>("Admin with id- "+id+" Deleted successfully!",HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Admin with id- " + id + " Deleted successfully!", HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/admins/{id}")
-    public ResponseEntity<AdminResponseDto> getAdminById(@PathVariable long id){
+    public ResponseEntity<AdminResponseDto> getAdminById(@PathVariable long id) {
 
-        return new ResponseEntity<>(adminService.getAdminById(id),HttpStatus.FOUND);
+        return new ResponseEntity<>(adminService.getAdminById(id), HttpStatus.FOUND);
     }
 
     @GetMapping("/admins")
     public ResponseEntity<Page<AdminResponseDto>> getAllAdmins(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "100") int size){
+            @RequestParam(defaultValue = "100") int size) {
 
-        Pageable pageable = PageRequest.of(page,size);
-        return new ResponseEntity<>(adminService.getAllAdmins(pageable),HttpStatus.ACCEPTED);
-    }
-
-    @GetMapping("/admins/{email}")
-    public ResponseEntity<AdminResponseDto> getAdminByEmail(@PathVariable String email){
-        return new ResponseEntity<>(adminService.getAdminByEmail(email),HttpStatus.FOUND);
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(adminService.getAllAdmins(pageable), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/admins/search")
-    public ResponseEntity<Page<AdminResponseDto>> getAllAdminsBySearch(
-            @RequestParam String firstName,
+    public ResponseEntity<Page<AdminResponseDto>> searchAdminByName(
+            @RequestParam String name,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size){
+            @RequestParam(defaultValue = "100") int size) {
 
-        Pageable pageable = PageRequest.of(page, size,
-                Sort.by(Sort.Order.asc("firstName")));
+        Pageable pageable = PageRequest.of(page, size);
 
-        return new ResponseEntity<>(adminService.getAllAdminsPageable(firstName,pageable),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(adminService.searchAdminByName(name, pageable), HttpStatus.ACCEPTED);
     }
+
 }

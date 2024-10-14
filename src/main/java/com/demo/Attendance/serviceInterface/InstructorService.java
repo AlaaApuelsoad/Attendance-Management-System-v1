@@ -19,4 +19,6 @@ public interface InstructorService {
 
     Page<InstructorResponseDto> getAllInstructor(Pageable pageable);
 
+    Page<InstructorResponseDto> searchByInstructorName(String name, Pageable pageable);
+
 }

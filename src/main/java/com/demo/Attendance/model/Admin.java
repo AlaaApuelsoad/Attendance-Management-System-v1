@@ -20,7 +20,7 @@ public class Admin {
     @Column(name = "id")
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
     @JsonManagedReference(value = "adminUserReference")
     private User user;

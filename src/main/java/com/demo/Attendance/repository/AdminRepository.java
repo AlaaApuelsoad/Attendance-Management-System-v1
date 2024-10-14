@@ -7,15 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin,Long>,UniqueChecker {
-
-    @Override
-    Page<Admin> findAll(Pageable pageable);
-
-    Admin findAdminByEmail(String email);
 
     @Override
     boolean existsByEmail(String email);
@@ -23,8 +17,11 @@ public interface AdminRepository extends JpaRepository<Admin,Long>,UniqueChecker
     @Override
     boolean existsByPhoneNumber(String phoneNumber);
 
-//    @Query("SELECT a FROM Admin a WHERE a.firstName LIKE %:firstName%")
-    @Query("SELECT a FROM Admin a JOIN FETCH User u on a.user.id = u.id where a.firstName LIKE %:firstName% ")
-    Page<Admin> searchAdminByFirstNameAndLastName(@RequestParam("firstName") String firstName, Pageable pageable);
+    @Override
+    Page<Admin> findAll(Pageable pageable);
+
+    @Query("SELECT a FROM Admin a JOIN FETCH User u ON a.user.id = u.id " +
+            "WHERE a.firstName LIKE %?1% OR a.lastName LIKE %?1% ORDER BY a.firstName")
+    Page<Admin> searchAdminByName(String name,Pageable pageable);
 
 }

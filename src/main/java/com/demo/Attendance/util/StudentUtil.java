@@ -27,7 +27,7 @@ public class StudentUtil {
 
     public Student findStudentById(long id) {
         return studentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ConstantMessages.studentNotFound+id+ConstantMessages.notFoundMessage));
+                .orElseThrow(() -> new NotFoundException(ConstantMessages.STUDENT_WITH_ID +id+ConstantMessages.NOT_FOUND));
     }
 
     public User setUserForStudent(StudentRequestDto studentRequestDto) {
@@ -53,7 +53,7 @@ public class StudentUtil {
             student.setPhoneNumber(studentRequestDto.getPhoneNumber());
         }
         if (isValid(studentRequestDto.getPassword())) {
-            updateInstructorPassword(student, studentRequestDto.getPassword());
+            updateStudentPassword(student, studentRequestDto.getPassword());
         }
 
         String firstNameUpdate = studentRequestDto.getFirstName();
@@ -78,7 +78,7 @@ public class StudentUtil {
         return value != null && !value.trim().isEmpty();
     }
 
-    private void updateInstructorPassword(Student student, String newPassword) {
+    private void updateStudentPassword(Student student, String newPassword) {
 
         User studentUser = student.getUser();
         studentUser.setPassword(passwordEncoder.encode(newPassword));
@@ -90,6 +90,5 @@ public class StudentUtil {
         String newUserName = user.getUserName() + id;
         user.setUserName(newUserName);
     }
-
 
 }

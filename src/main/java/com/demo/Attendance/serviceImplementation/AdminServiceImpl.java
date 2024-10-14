@@ -14,12 +14,17 @@ import com.demo.Attendance.util.UniqueChecker;
 import com.github.javafaker.Faker;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 @Service
@@ -44,13 +49,14 @@ public class AdminServiceImpl implements AdminService {
         this.adminMapping = adminMapping;
     }
 
-    @PostConstruct
+//    @PostConstruct
+//    @Scheduled(fixedDelay = 30000)
     @Transactional
     public void init() {
 
         Faker faker = new Faker();
 
-        List<AdminRequestDto> adminRequestDtoList = IntStream.range(0, 0)
+        List<AdminRequestDto> adminRequestDtoList = IntStream.range(0, 1000)
                 .mapToObj(i -> new AdminRequestDto(
                         faker.name().firstName(),
                         faker.name().lastName(),
@@ -66,11 +72,9 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public AdminResponseDto createAdmin(AdminRequestDto adminRequestDto) {
 
-        //Unique checker for email and phoneNumber
         uniqueChecker.emailUniqueChecker(adminRequestDto.getEmail());
         uniqueChecker.phoneNumberUniqueChecker(adminRequestDto.getPhoneNumber());
 
-        //Set user for admin
         User adminUser = adminUtil.setUserForAdmin(adminRequestDto);
 
         Admin admin = adminMapping.mapToAdmin(adminRequestDto);
@@ -87,19 +91,15 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public AdminResponseDto updateAdmin(AdminRequestDto adminRequestDto, long id) {
 
-        // Fetch instructor and throw if not found
         Admin admin = adminUtil.findAdminById(id);
 
-        //Unique checker for email and phoneNumber
         uniqueChecker.emailUniqueChecker(adminRequestDto.getEmail());
         uniqueChecker.phoneNumberUniqueChecker(adminRequestDto.getPhoneNumber());
 
         User adminUser = admin.getUser();
 
-        // update admin details
         adminUtil.updateAdminDetails(admin, adminRequestDto);
 
-        // update userName with id
         adminUtil.updateUserNameWithId(admin.getId(), adminUser);
 
         admin.setUser(adminUser);
@@ -129,15 +129,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminResponseDto getAdminByEmail(String email) {
-        Admin admin = adminRepository.findAdminByEmail(email);
-        return adminMapper.mapToDto(admin);
-    }
+    public Page<AdminResponseDto> searchAdminByName(String name, Pageable pageable) {
 
-    @Override
-    public Page<AdminResponseDto> getAllAdminsPageable(String firstName, Pageable pageable) {
-
-        Page<Admin> adminPage = adminRepository.searchAdminByFirstNameAndLastName(firstName, pageable);
+        Page<Admin> adminPage = adminRepository.searchAdminByName(name, pageable);
         return adminPage.map(adminMapper::mapToDto);
     }
 

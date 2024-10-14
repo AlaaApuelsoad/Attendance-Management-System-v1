@@ -19,8 +19,6 @@ public interface AdminService {
 
     Page<AdminResponseDto> getAllAdmins(Pageable pageable);
 
-    AdminResponseDto getAdminByEmail(String email);
-
-    Page<AdminResponseDto> getAllAdminsPageable(String firstName,Pageable pageable);
+    Page<AdminResponseDto> searchAdminByName(String firstName,Pageable pageable);
 
 }

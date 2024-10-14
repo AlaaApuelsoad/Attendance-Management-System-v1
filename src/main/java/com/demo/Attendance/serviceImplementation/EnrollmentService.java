@@ -5,64 +5,56 @@ import com.demo.Attendance.dto.dtoEnrollment.EnrollmentResponseDto;
 import com.demo.Attendance.mapper.EnrollmentMapper;
 import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Student;
-import com.demo.Attendance.repository.CourseRepository;
 import com.demo.Attendance.repository.StudentRepository;
 import com.demo.Attendance.util.CourseUtil;
 import com.demo.Attendance.util.EnrollmentsUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Service
 public class EnrollmentService {
 
-    private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
     private final EnrollmentsUtil enrollmentsUtil;
     private final CourseUtil courseUtil;
+    private final EnrollmentMapper enrollmentMapper;
 
-    public EnrollmentService(CourseRepository courseRepository, StudentRepository studentRepository, EnrollmentsUtil enrollmentsUtil, CourseUtil courseUtil) {
-        this.courseRepository = courseRepository;
+    public EnrollmentService(StudentRepository studentRepository, EnrollmentsUtil enrollmentsUtil, CourseUtil courseUtil, EnrollmentMapper enrollmentMapper) {
         this.studentRepository = studentRepository;
         this.enrollmentsUtil = enrollmentsUtil;
         this.courseUtil = courseUtil;
+        this.enrollmentMapper = enrollmentMapper;
     }
 
 
     @Transactional
-    public EnrollmentResponseDto enrollStudent(EnrollmentRequestDto enrollmentRequestDto) {
+    public EnrollmentResponseDto enrollStudentToCourse(EnrollmentRequestDto enrollmentRequestDto) {
 
-        // fetching list of studentIDS
-        List<Student> students = enrollmentsUtil.findAllStudentsById(enrollmentRequestDto.getStudentId());
+        Set<Student> students = new HashSet<>(enrollmentsUtil.findAllStudentsById(enrollmentRequestDto.getStudentId().stream().toList()));
 
         if (students.size() != enrollmentRequestDto.getStudentId().size()) {
-            enrollmentsUtil.filterStudentIDs(students,enrollmentRequestDto);
+            enrollmentsUtil.filterStudentIDs(students, enrollmentRequestDto);
         }
 
-        // fetching list of coursesIDS
-        List<Course> courses = enrollmentsUtil.findAllCoursesById(enrollmentRequestDto.getCourseId());
+        Set<Course> coursesToAssign = new HashSet<>(enrollmentsUtil.findAllCoursesById(enrollmentRequestDto.getCourseId().stream().toList()));
 
-        if (courses.size() != enrollmentRequestDto.getCourseId().size()) {
-            enrollmentsUtil.filterCourseIDs(courses,enrollmentRequestDto);
+        if (coursesToAssign.size() != enrollmentRequestDto.getCourseId().size()) {
+            enrollmentsUtil.filterCourseIDs(coursesToAssign, enrollmentRequestDto);
         }
 
         for (Student student : students) {
-            for (Course course : courses) {
-                student.getCourses().add(course);
-                course.getStudent().add(student);
-            }
+            student.getCourses().addAll(coursesToAssign);
         }
         studentRepository.saveAll(students);
-        courseRepository.saveAll(courses);
-        return EnrollmentMapper.mapToEnrollResponseDto(students);
+        return enrollmentMapper.mapToDto(students);
     }
 
-    public EnrollmentResponseDto getStudentEnrollInCourse(long id){
-
+    public EnrollmentResponseDto getStudentEnrollInCourse(long id) {
         Course course = courseUtil.findCourseById(id);
-
-        return EnrollmentMapper.mapToEnrollmentStudentInCourse(course);
+        return enrollmentMapper.mapToDto(course);
     }
 }

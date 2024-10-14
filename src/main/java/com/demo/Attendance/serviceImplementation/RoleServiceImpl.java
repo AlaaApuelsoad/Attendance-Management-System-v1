@@ -49,7 +49,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleResponseDto getRoleById(long id) {
 
         Role role = roleRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(ConstantMessages.roleNotFound + id + ConstantMessages.notFoundMessage)
+                () -> new NotFoundException(ConstantMessages.ROLE_WITH_ID+id + ConstantMessages.NOT_FOUND)
         );
         return RoleMapper.mapToRoleResponseDto(role);
     }
@@ -65,7 +65,7 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRoleById(long id) {
 
         Role role = roleRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(ConstantMessages.roleNotFound + id + ConstantMessages.notFoundMessage)
+                () -> new NotFoundException(ConstantMessages.ROLE_WITH_ID+id+ ConstantMessages.NOT_FOUND)
         );
         roleRepository.deleteById(id);
     }

@@ -63,8 +63,7 @@ public class CourseController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "100") int size){
 
-        Pageable pageable = PageRequest.of(page,size,Sort.by(Sort.Order.asc("courseName")));
-
+        Pageable pageable = PageRequest.of(page,size);
         return new ResponseEntity<>(courseService.searchByCourseName(name,pageable),HttpStatus.ACCEPTED);
     }
 

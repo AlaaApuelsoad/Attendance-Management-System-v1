@@ -18,6 +18,7 @@ public class AdminUtil {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     @Autowired
     public AdminUtil(AdminRepository adminRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.adminRepository = adminRepository;
@@ -27,7 +28,7 @@ public class AdminUtil {
 
     public Admin findAdminById(long id){
         return adminRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException(ConstantMessages.adminNotFound +id+ConstantMessages.notFoundMessage)
+                ()-> new NotFoundException(ConstantMessages.ADMIN_WITH_ID +id+ConstantMessages.NOT_FOUND)
         );
     }
 

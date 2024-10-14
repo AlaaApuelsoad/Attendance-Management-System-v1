@@ -20,7 +20,7 @@ public class EnrollmentController {
     @PostMapping("/enrollments")
     public ResponseEntity<EnrollmentResponseDto> enrollStudent(@Valid @RequestBody EnrollmentRequestDto enrollmentRequestDto){
 
-        return new ResponseEntity<>(enrollmentService.enrollStudent(enrollmentRequestDto), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(enrollmentService.enrollStudentToCourse(enrollmentRequestDto), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/enrollments/courses/{id}")
