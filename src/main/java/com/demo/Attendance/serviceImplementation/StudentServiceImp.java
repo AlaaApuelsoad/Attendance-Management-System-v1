@@ -41,12 +41,12 @@ public class StudentServiceImp implements StudentService {
         this.studentMapper = studentMapper;
     }
 
-    @Transactional
 //    @PostConstruct
+    @Transactional
     public void init() {
         Faker faker = new Faker();
 
-        List<StudentRequestDto> studentRequestDtoList = IntStream.range(0, 1000)
+        List<StudentRequestDto> studentRequestDtoList = IntStream.range(0, 0)
                 .mapToObj(i -> new StudentRequestDto(
                         faker.name().firstName(),
                         faker.name().lastName(),

@@ -56,7 +56,7 @@ public class AdminServiceImpl implements AdminService {
 
         Faker faker = new Faker();
 
-        List<AdminRequestDto> adminRequestDtoList = IntStream.range(0, 1000)
+        List<AdminRequestDto> adminRequestDtoList = IntStream.range(0, 0)
                 .mapToObj(i -> new AdminRequestDto(
                         faker.name().firstName(),
                         faker.name().lastName(),

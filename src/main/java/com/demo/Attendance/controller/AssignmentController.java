@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AssignController {
+public class AssignmentController {
 
     private final AssignmentService assignmentService;
 
-    public AssignController(AssignmentService assignmentService) {
+    public AssignmentController(AssignmentService assignmentService) {
         this.assignmentService = assignmentService;
     }
 
 
-    @PostMapping("/assigns")
+    @PostMapping("/assignments")
     public ResponseEntity<InstructorCourseAssignResponseDto> AssignInstructorToCourse(@Validated @RequestBody InstructorCourseAssignRequestDto instructorCourseAssignRequestDto) {
 
         return new ResponseEntity<>(assignmentService.assignInstructorToCourse(instructorCourseAssignRequestDto), HttpStatus.CREATED);

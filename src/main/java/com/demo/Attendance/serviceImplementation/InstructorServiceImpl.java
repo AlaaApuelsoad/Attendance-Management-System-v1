@@ -46,7 +46,7 @@ public class InstructorServiceImpl implements InstructorService {
     public void init() {
         Faker faker = new Faker();
 
-        List<InstructorRequestDto> instructorRequestDtoList = IntStream.range(0, 1000)
+        List<InstructorRequestDto> instructorRequestDtoList = IntStream.range(0, 0)
                 .mapToObj(i -> new InstructorRequestDto(
                         faker.name().firstName(),
                         faker.name().lastName(),
