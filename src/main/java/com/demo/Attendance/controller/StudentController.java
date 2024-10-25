@@ -23,7 +23,7 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/students")
+    @PostMapping("/register/students")
     public ResponseEntity<StudentResponseDto> createStudent
             (@Validated(OnCreate.class) @RequestBody StudentRequestDto studentRequestDto){
         return new ResponseEntity<>(studentService.createStudent(studentRequestDto), HttpStatus.CREATED);

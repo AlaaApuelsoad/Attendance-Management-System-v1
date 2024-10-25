@@ -1,4 +1,4 @@
-package com.demo.Attendance.configuration;
+package com.demo.Attendance.mapper;
 
 import com.demo.Attendance.dto.dtoAdmin.AdminResponseDto;
 import com.fasterxml.jackson.core.JacksonException;

@@ -13,7 +13,6 @@ public class LoggingAspect {
     private Logger myLogger = Logger.getLogger(getClass().getName());
 
 
-    //setup pointCut
     @Pointcut("execution(* com.demo.Attendance.controller.*.*(..))")
     private void forControllerPackage(){}
 

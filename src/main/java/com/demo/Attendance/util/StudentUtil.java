@@ -6,22 +6,25 @@ import com.demo.Attendance.model.*;
 import com.demo.Attendance.repository.RoleRepository;
 import com.demo.Attendance.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Component
 public class StudentUtil {
 
     private final StudentRepository studentRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
 
 
     @Autowired
-    public StudentUtil(StudentRepository studentRepository, PasswordEncoder passwordEncoder,
+    public StudentUtil(StudentRepository studentRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
                        RoleRepository roleRepository) {
         this.studentRepository = studentRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.roleRepository = roleRepository;
     }
 
@@ -32,13 +35,14 @@ public class StudentUtil {
 
     public User setUserForStudent(StudentRequestDto studentRequestDto) {
 
-        Role studentRole = roleRepository.findByRoleName("ROLE_STUDENT");
+        String yearString = new SimpleDateFormat("yyyy").format(new Date());
+        Role studentRole = roleRepository.findByRoleName("STUDENT");
 
         User studentUser = new User();
         studentUser.setRole(studentRole);
         studentUser.setUserName(studentRequestDto.getFirstName().toLowerCase() +
-                studentRequestDto.getLastName().toLowerCase() + "2024");
-        studentUser.setPassword(passwordEncoder.encode(studentRequestDto.getPassword()));
+                studentRequestDto.getLastName().toLowerCase() + yearString);
+        studentUser.setPassword(bCryptPasswordEncoder.encode(studentRequestDto.getPassword()));
         return studentUser;
     }
 
@@ -81,7 +85,7 @@ public class StudentUtil {
     private void updateStudentPassword(Student student, String newPassword) {
 
         User studentUser = student.getUser();
-        studentUser.setPassword(passwordEncoder.encode(newPassword));
+        studentUser.setPassword(bCryptPasswordEncoder.encode(newPassword));
         student.setUser(studentUser);
     }
 

@@ -2,30 +2,28 @@ package com.demo.Attendance.util;
 
 import com.demo.Attendance.dto.dtoInstructor.InstructorRequestDto;
 import com.demo.Attendance.exceptionHandling.NotFoundException;
-import com.demo.Attendance.model.Course;
 import com.demo.Attendance.model.Instructor;
 import com.demo.Attendance.model.Role;
 import com.demo.Attendance.model.User;
 import com.demo.Attendance.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 @Component
 public  class InstructorUtil {
 
     private final InstructorRepository instructorRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public InstructorUtil(InstructorRepository instructorRepository, RoleRepository roleRepository,
-                          PasswordEncoder passwordEncoder) {
+                          BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.instructorRepository = instructorRepository;
         this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public Instructor findInstructorById(long id){
@@ -35,19 +33,15 @@ public  class InstructorUtil {
 
     public User setUserForInstructor(InstructorRequestDto instructorRequestDto){
 
-        Role instructorRole = roleRepository.findByRoleName("ROLE_INSTRUCTOR");
+        Role instructorRole = roleRepository.findByRoleName("INSTRUCTOR");
 
         User instructorUser = new User();
         instructorUser.setRole(instructorRole);
         instructorUser.setUserName(instructorRequestDto.getFirstName().toLowerCase()+
-                instructorRequestDto.getLastName().toLowerCase()+"2024");
-        instructorUser.setPassword(passwordEncoder.encode(instructorRequestDto.getPassword()));
+                instructorRequestDto.getLastName().toLowerCase());
+        instructorUser.setPassword(bCryptPasswordEncoder.encode(instructorRequestDto.getPassword()));
 
         return instructorUser;
-    }
-
-    public void updateInstructorCourse(Instructor instructor,List<Course> courses){
-        instructor.getCourses().addAll(courses);
     }
 
     public void updateInstructorDetails(Instructor instructor , InstructorRequestDto instructorRequestDto){
@@ -86,7 +80,7 @@ public  class InstructorUtil {
     private void updateInstructorPassword(Instructor instructor, String newPassword) {
 
         User instructorUser = instructor.getUser();
-        instructorUser.setPassword(passwordEncoder.encode(newPassword));
+        instructorUser.setPassword(bCryptPasswordEncoder.encode(newPassword));
         instructor.setUser(instructorUser);
     }
 

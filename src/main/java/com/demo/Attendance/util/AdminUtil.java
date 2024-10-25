@@ -8,7 +8,7 @@ import com.demo.Attendance.model.User;
 import com.demo.Attendance.repository.AdminRepository;
 import com.demo.Attendance.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,14 +16,14 @@ public class AdminUtil {
 
     private final AdminRepository adminRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Autowired
-    public AdminUtil(AdminRepository adminRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public AdminUtil(AdminRepository adminRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.adminRepository = adminRepository;
         this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public Admin findAdminById(long id){
@@ -41,7 +41,7 @@ public class AdminUtil {
         adminUser.setUserName(adminRequestDto.getFirstName().toLowerCase().
                 concat(adminRequestDto.getLastName().toLowerCase()));
 
-        adminUser.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
+        adminUser.setPassword(bCryptPasswordEncoder.encode(adminRequestDto.getPassword()));
 
         return adminUser;
     }
@@ -84,7 +84,7 @@ public class AdminUtil {
 
     private void updateAdminPassword(Admin admin,String newPassword){
         User adminUser = admin.getUser();
-        adminUser.setPassword(passwordEncoder.encode(newPassword));
+        adminUser.setPassword(bCryptPasswordEncoder.encode(newPassword));
         admin.setUser(adminUser);
     }
 

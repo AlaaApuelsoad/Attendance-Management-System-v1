@@ -20,7 +20,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>, UniqueC
     @Override
     Page<Student> findAll(Pageable pageable);
 
-    @Query("SELECT s FROM Student s WHERE s.firstName LIKE %?1% OR s.lastName LIKE %?1% ORDER BY s.firstName")
+    @Query("SELECT s FROM Student s WHERE lower( s.firstName) LIKE %?1% OR s.lastName LIKE %?1% ORDER BY s.firstName")
     Page<Student> searchStudentByName(String name,Pageable pageable);
 
 }

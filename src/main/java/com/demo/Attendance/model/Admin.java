@@ -20,11 +20,6 @@ public class Admin {
     @Column(name = "id")
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",nullable = false)
-    @JsonManagedReference(value = "adminUserReference")
-    private User user;
-
     @Column(nullable = false,length = 50)
     private String firstName;
 
@@ -36,5 +31,10 @@ public class Admin {
 
     @Column(nullable = false,length = 11,unique = true)
     private String phoneNumber;
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",nullable = false)
+    @JsonManagedReference(value = "adminUserReference")
+    private User user;
 
 }

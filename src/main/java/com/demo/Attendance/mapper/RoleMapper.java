@@ -1,28 +1,35 @@
 package com.demo.Attendance.mapper;
 
+import com.demo.Attendance.dto.dtoRole.RoleRequestDto;
 import com.demo.Attendance.dto.dtoRole.RoleResponseDto;
 import com.demo.Attendance.model.Role;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class RoleMapper {
 
-    public static RoleResponseDto mapToRoleResponseDto(Role role){
+    private final ObjectMapper objectMapper;
 
-        RoleResponseDto roleResponseDto = new RoleResponseDto();
-
-        roleResponseDto.setId(role.getId());
-
-        roleResponseDto.setRoleName(role.getRoleName());
-
-        return roleResponseDto;
+    public RoleMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
-    //Mapping List<Role> to List<RoleResponseDto>
-    public static List<RoleResponseDto> toRoleResponseDtoList(List<Role> roles) {
+    public Role mapToRole(RoleRequestDto roleRequestDto) {
+        return objectMapper.convertValue(roleRequestDto, Role.class);
+    }
+
+    public RoleResponseDto mapToDto(Role role){
+        return objectMapper.convertValue(role, RoleResponseDto.class);
+    }
+
+    public List<RoleResponseDto> mapToDtoList(List<Role> roles) {
         return roles.stream()
-                .map(RoleMapper::mapToRoleResponseDto)
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
+
 }

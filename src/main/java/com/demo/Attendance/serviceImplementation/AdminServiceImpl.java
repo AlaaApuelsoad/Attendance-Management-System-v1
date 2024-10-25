@@ -3,7 +3,6 @@ package com.demo.Attendance.serviceImplementation;
 import com.demo.Attendance.dto.dtoAdmin.AdminRequestDto;
 import com.demo.Attendance.dto.dtoAdmin.AdminResponseDto;
 import com.demo.Attendance.mapper.AdminMapper;
-import com.demo.Attendance.mapper.AdminMapping;
 import com.demo.Attendance.model.Admin;
 import com.demo.Attendance.model.User;
 import com.demo.Attendance.repository.AdminRepository;
@@ -12,19 +11,13 @@ import com.demo.Attendance.serviceInterface.AdminService;
 import com.demo.Attendance.util.AdminUtil;
 import com.demo.Attendance.util.UniqueChecker;
 import com.github.javafaker.Faker;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 @Service
@@ -35,21 +28,20 @@ public class AdminServiceImpl implements AdminService {
     private final AdminUtil adminUtil;
     private final UniqueChecker uniqueChecker;
     private final AdminMapper adminMapper;
-    private final AdminMapping adminMapping;
 
 
     @Autowired
     public AdminServiceImpl(AdminRepository adminRepository, UserRepository userRepository,
-                            AdminUtil adminUtil, UniqueChecker uniqueChecker, AdminMapper adminMapper, AdminMapping adminMapping) {
+                            AdminUtil adminUtil, UniqueChecker uniqueChecker, AdminMapper adminMapper) {
         this.adminRepository = adminRepository;
         this.userRepository = userRepository;
         this.adminUtil = adminUtil;
         this.uniqueChecker = uniqueChecker;
         this.adminMapper = adminMapper;
-        this.adminMapping = adminMapping;
+
     }
 
-//    @PostConstruct
+    //    @PostConstruct
 //    @Scheduled(fixedDelay = 30000)
     @Transactional
     public void init() {
@@ -77,9 +69,12 @@ public class AdminServiceImpl implements AdminService {
 
         User adminUser = adminUtil.setUserForAdmin(adminRequestDto);
 
-        Admin admin = adminMapping.mapToAdmin(adminRequestDto);
+        Admin admin = adminMapper.mapToAdmin(adminRequestDto);
+
         admin.setUser(adminUser);
+
         adminRepository.save(admin);
+
         adminUtil.updateUserNameWithId(admin.getId(), adminUser);
 
         userRepository.save(adminUser);

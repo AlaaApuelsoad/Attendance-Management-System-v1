@@ -37,7 +37,7 @@ public class ApplicationInitialize {
     public void initialize() {
 
         // Create and save roles
-        List<String> roleNames = Arrays.asList("ROLE_ADMIN", "ROLE_STUDENT", "ROLE_INSTRUCTOR");
+        List<String> roleNames = Arrays.asList("ROLE_ADMIN", "STUDENT", "INSTRUCTOR");
         roleNames.forEach(roleName -> {
             if (roleRepository.findByRoleName(roleName) == null) {
                 Role role = new Role();

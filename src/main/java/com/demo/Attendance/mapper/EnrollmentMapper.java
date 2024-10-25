@@ -23,9 +23,9 @@ public class EnrollmentMapper {
 
         // Collect course names for each student
         List<String> courseNames = students.stream()
-                .flatMap(student -> student.getCourses().stream()) // Flatten list of courses from each student
-                .map(Course::getCourseName) // Extract course names
-                .distinct() // Ensure each course name is unique
+                .flatMap(student -> student.getCourses().stream())
+                .map(Course::getCourseName)
+                .distinct()
                 .collect(Collectors.toList());
 
         enrollmentResponseDto.setStudentNameList(studentNames);

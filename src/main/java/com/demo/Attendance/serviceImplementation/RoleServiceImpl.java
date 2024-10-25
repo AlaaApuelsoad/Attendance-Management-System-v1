@@ -8,41 +8,36 @@ import com.demo.Attendance.model.Role;
 import com.demo.Attendance.repository.RoleRepository;
 import com.demo.Attendance.serviceInterface.RoleService;
 import com.demo.Attendance.util.ConstantMessages;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
+    private final RoleMapper roleMapper;
+    private final ObjectMapper objectMapper;
 
 
     @Autowired
-    public RoleServiceImpl(RoleRepository roleRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper, @Qualifier("objectMapper") ObjectMapper objectMapper) {
         this.roleRepository = roleRepository;
+        this.roleMapper = roleMapper;
+        this.objectMapper = objectMapper;
     }
 
     @Override
     @Transactional
-    public List<RoleResponseDto> createRole(RoleRequestDto roleRequestDto) {
+    public RoleResponseDto createRole(RoleRequestDto roleRequestDto) {
 
-        List<RoleResponseDto> roleResponseDtos = new ArrayList<>();
-
-
-        for (String roleName : roleRequestDto.getRoleName()) {
-            Role role = new Role();
-            role.setRoleName(roleName);
-            roleRepository.save(role);
-
-            RoleResponseDto roleResponseDto = RoleMapper.mapToRoleResponseDto(role);
-            roleResponseDtos.add(roleResponseDto);
-            System.out.println(roleResponseDtos.get(0));
-        }
-        return roleResponseDtos;
+        Role role = roleMapper.mapToRole(roleRequestDto);
+        roleRepository.save(role);
+        return roleMapper.mapToDto(role);
     }
 
     @Override
@@ -51,14 +46,14 @@ public class RoleServiceImpl implements RoleService {
         Role role = roleRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(ConstantMessages.ROLE_WITH_ID+id + ConstantMessages.NOT_FOUND)
         );
-        return RoleMapper.mapToRoleResponseDto(role);
+        return roleMapper.mapToDto(role);
     }
 
     @Override
     public List<RoleResponseDto> getAllRoles() {
 
         List<Role> roles = roleRepository.findAll();
-        return RoleMapper.toRoleResponseDtoList(roles);
+        return roleMapper.mapToDtoList(roles);
     }
 
     @Override

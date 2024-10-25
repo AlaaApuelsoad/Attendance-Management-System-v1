@@ -25,7 +25,7 @@ public class InstructorController {
         this.instructorService = instructorService;
     }
 
-    @PostMapping("/instructors")
+    @PostMapping("/register/instructors")
     public ResponseEntity<InstructorResponseDto> createInstructor
             (@Validated(OnCreate.class) @RequestBody InstructorRequestDto instructorRequestDto){
 

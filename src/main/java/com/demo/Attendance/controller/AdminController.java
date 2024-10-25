@@ -23,7 +23,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @PostMapping("/admins")
+    @PostMapping("/register/admins")
     public ResponseEntity<AdminResponseDto> createAdmin(@Validated(OnCreate.class) @RequestBody AdminRequestDto adminRequestDto) {
         System.out.println("in controller");
         return new ResponseEntity<>(adminService.createAdmin(adminRequestDto), HttpStatus.CREATED);
