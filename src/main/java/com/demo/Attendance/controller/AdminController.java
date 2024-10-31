@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class AdminController {
     }
 
     @PostMapping("/register/admins")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AdminResponseDto> createAdmin(@Validated(OnCreate.class) @RequestBody AdminRequestDto adminRequestDto) {
         System.out.println("in controller");
         return new ResponseEntity<>(adminService.createAdmin(adminRequestDto), HttpStatus.CREATED);

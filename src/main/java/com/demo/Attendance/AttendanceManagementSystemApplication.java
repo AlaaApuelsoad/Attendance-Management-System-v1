@@ -22,12 +22,15 @@ public class AttendanceManagementSystemApplication {
     private final AdminServiceImpl adminService;
     private final InstructorServiceImpl instructorService;
     private final StudentServiceImp studentService;
+    private final EmailService emailService;
+
 
     public AttendanceManagementSystemApplication(AdminServiceImpl adminService, InstructorServiceImpl instructorService,
-                                                 StudentServiceImp studentService) {
+                                                 StudentServiceImp studentService, EmailService emailService) {
         this.adminService = adminService;
         this.instructorService = instructorService;
         this.studentService = studentService;
+        this.emailService = emailService;
     }
 
     @Bean
@@ -37,7 +40,7 @@ public class AttendanceManagementSystemApplication {
 //            adminService.init();
 //            instructorService.init();
 //            studentService.init();
-
+                emailService.sendEmail();
             System.out.println("Welcome to Attendance Management System");
         };
     }

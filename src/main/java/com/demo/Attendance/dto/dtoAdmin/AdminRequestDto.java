@@ -22,7 +22,7 @@ public class AdminRequestDto {
     @Pattern(regexp = "^[a-zA-Z]+$", message = "last name must contain only letters")
     private String lastName;
 
-    @NotBlank(message = "first name cannot be null",groups = OnCreate.class)
+    @NotBlank(message = "email cannot be null",groups = OnCreate.class)
     @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", message = "Please enter a valid email" +
             " address in the format: username@example.com.")
     private String email;

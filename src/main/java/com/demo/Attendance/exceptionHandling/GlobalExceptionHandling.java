@@ -226,7 +226,7 @@ public class GlobalExceptionHandling {
                 HttpStatus.UNAUTHORIZED.value(),
                 "Unauthorized"
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED  );
     }
 
     // Add other exception handlers as needed

@@ -2,6 +2,7 @@ package com.demo.Attendance.controller;
 
 import com.demo.Attendance.dto.LoginDto.LoginDto;
 import com.demo.Attendance.jwtSecurity.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,13 +39,15 @@ public class HomeController {
 
     @GetMapping("hello")
     @PreAuthorize("hasRole('ADMIN')")
-    public String hello(){
+    public String hello(HttpServletRequest request) {
+        System.out.println(request.getHeader("Authorization"));
         return "hello Page";
     }
 
     @GetMapping("welcome")
     @PreAuthorize("hasAuthority('STUDENT')")
-    public String welcome(){
+    public String welcome(HttpServletRequest request) {
+        System.out.println(request.getHeader("Authorization"));
         return "welcome";
     }
 

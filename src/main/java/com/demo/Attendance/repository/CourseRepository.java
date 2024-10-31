@@ -18,4 +18,5 @@ public interface CourseRepository extends JpaRepository<Course,Long> {
     @Query("SELECT c FROM Course c WHERE c.courseName LIKE %?1%")
     Page<Course> searchByCourseName(String courseName,Pageable pageable);
 
+
 }

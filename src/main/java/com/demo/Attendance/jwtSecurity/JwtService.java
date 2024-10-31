@@ -9,6 +9,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
@@ -29,7 +30,6 @@ public class JwtService {
         SECRET_KEY = generateSecretKey();
     }
 
-    //Function to generate token
     public String generateSecretKey() {
 
         try {
@@ -41,11 +41,12 @@ public class JwtService {
         }
     }
 
+    //Function to generate token
     public String generateToken(LoginDto loginDto) {
 
-        Map<String,Object> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
         String roleValue = userRepository.findByUserName(loginDto.getUsername()).getRole().getRoleName();
-        System.out.println("Role: "+roleValue);
+        System.out.println("Role: " + roleValue);
         claims.put("role", roleValue);
 
         return Jwts.builder()
@@ -53,11 +54,11 @@ public class JwtService {
                 .setSubject(loginDto.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 3))
-                .signWith(getKey(),SignatureAlgorithm.HS256).compact();
+                .signWith(getKey(), SignatureAlgorithm.HS256).compact();
     }
 
     private SecretKey getKey() {
-        byte [] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -81,11 +82,6 @@ public class JwtService {
         return extractClaims(token, Claims::getSubject);
     }
 
-    // extract role from jwt token
-    public String extractRole(String token) {
-        return extractAllClaims(token).get("role", String.class);
-    }
-
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -94,4 +90,10 @@ public class JwtService {
         final String username = extractUserName(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+    // extract role from jwt token
+//    public String extractRole(String token) {
+//        return extractAllClaims(token).get("role", String.class);
+//    }
+
 }
